@@ -89,12 +89,12 @@ const Index = () => {
 
       <SearchBar onSearch={setSearchTerm} />
       
-      <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
         {filteredWords.map((word, index) => (
           <WordCard key={index} {...word} />
         ))}
         {filteredWords.length === 0 && (
-          <p className="text-center text-muted-foreground">
+          <p className="text-center text-muted-foreground col-span-full">
             No words found matching &quot;{searchTerm}&quot;
           </p>
         )}

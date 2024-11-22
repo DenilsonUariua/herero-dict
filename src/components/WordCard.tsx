@@ -31,35 +31,35 @@ export const WordCard = ({ word, pronunciation, definitions }: WordCardProps) =>
   };
 
   return (
-    <Card className="dictionary-card w-full max-w-xl mx-auto mt-6">
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
-          <span className="text-2xl font-bold">{word}</span>
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">{pronunciation}</span>
+    <Card className="dictionary-card w-full h-full">
+      <CardHeader className="p-4">
+        <CardTitle className="flex items-center justify-between text-lg">
+          <span className="font-bold">{word}</span>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">{pronunciation}</span>
             <div className="relative">
               <Button
                 variant="ghost"
-                size="icon"
+                size="sm"
                 onClick={handleLike}
-                className={isLiked ? "text-red-500 hover:text-red-600" : "text-muted-foreground"}
+                className={isLiked ? "text-red-500 hover:text-red-600 p-1" : "text-muted-foreground p-1"}
               >
-                <Heart className={isLiked ? "fill-current" : ""} />
+                <Heart className={isLiked ? "fill-current h-4 w-4" : "h-4 w-4"} />
               </Button>
               <span className="absolute -right-1 top-1 text-xs font-medium">{likeCount}</span>
             </div>
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-2 p-4 pt-0">
         {definitions.map((def, index) => (
-          <div key={index} className="space-y-2">
-            <Badge variant="secondary" className="mb-2">
+          <div key={index} className="space-y-1">
+            <Badge variant="secondary" className="text-xs">
               {def.type}
             </Badge>
-            <p className="text-foreground">{def.definition}</p>
+            <p className="text-sm text-foreground">{def.definition}</p>
             {def.example && (
-              <p className="text-muted-foreground text-sm italic">
+              <p className="text-xs text-muted-foreground italic">
                 &quot;{def.example}&quot;
               </p>
             )}
