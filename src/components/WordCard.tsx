@@ -19,10 +19,12 @@ interface WordCardProps {
 
 export const WordCard = ({ word, pronunciation, definitions }: WordCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
   const { toast } = useToast();
 
   const handleLike = () => {
     setIsLiked(!isLiked);
+    setLikeCount(prev => isLiked ? prev - 1 : prev + 1);
     toast({
       description: !isLiked ? `Added ${word} to favorites` : `Removed ${word} from favorites`,
     });
@@ -35,14 +37,17 @@ export const WordCard = ({ word, pronunciation, definitions }: WordCardProps) =>
           <span className="text-2xl font-bold">{word}</span>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">{pronunciation}</span>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleLike}
-              className={isLiked ? "text-red-500 hover:text-red-600" : "text-muted-foreground"}
-            >
-              <Heart className={isLiked ? "fill-current" : ""} />
-            </Button>
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-medium">{likeCount}</span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleLike}
+                className={isLiked ? "text-red-500 hover:text-red-600" : "text-muted-foreground"}
+              >
+                <Heart className={isLiked ? "fill-current" : ""} />
+              </Button>
+            </div>
           </div>
         </CardTitle>
       </CardHeader>
