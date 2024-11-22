@@ -37,8 +37,7 @@ export const WordCard = ({ word, pronunciation, definitions }: WordCardProps) =>
           <span className="text-2xl font-bold">{word}</span>
           <div className="flex items-center gap-4">
             <span className="text-sm text-muted-foreground">{pronunciation}</span>
-            <div className="flex items-center gap-2">
-              <span className="text-sm font-medium">{likeCount}</span>
+            <div className="relative">
               <Button
                 variant="ghost"
                 size="icon"
@@ -47,6 +46,7 @@ export const WordCard = ({ word, pronunciation, definitions }: WordCardProps) =>
               >
                 <Heart className={isLiked ? "fill-current" : ""} />
               </Button>
+              <span className="absolute -right-1 top-1 text-xs font-medium">{likeCount}</span>
             </div>
           </div>
         </CardTitle>
