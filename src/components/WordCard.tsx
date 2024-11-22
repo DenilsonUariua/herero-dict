@@ -26,7 +26,7 @@ export const WordCard = ({ word, pronunciation, definitions }: WordCardProps) =>
     setIsLiked(!isLiked);
     setLikeCount(prev => isLiked ? prev - 1 : prev + 1);
     toast({
-      description: !isLiked ? `Added ${word} to favorites` : `Removed ${word} from favorites`,
+      description: !isLiked ? `Liked ${word}` : `Unliked ${word}`,
     });
   };
 
