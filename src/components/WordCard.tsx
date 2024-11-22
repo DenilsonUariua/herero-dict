@@ -1,5 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Heart } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
 
 interface WordDefinition {
   type: string;
@@ -14,12 +18,32 @@ interface WordCardProps {
 }
 
 export const WordCard = ({ word, pronunciation, definitions }: WordCardProps) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const { toast } = useToast();
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    toast({
+      description: !isLiked ? `Added ${word} to favorites` : `Removed ${word} from favorites`,
+    });
+  };
+
   return (
     <Card className="dictionary-card w-full max-w-xl mx-auto mt-6">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span className="text-2xl font-bold">{word}</span>
-          <span className="text-sm text-muted-foreground">{pronunciation}</span>
+          <div className="flex items-center gap-4">
+            <span className="text-sm text-muted-foreground">{pronunciation}</span>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleLike}
+              className={isLiked ? "text-red-500 hover:text-red-600" : "text-muted-foreground"}
+            >
+              <Heart className={isLiked ? "fill-current" : ""} />
+            </Button>
+          </div>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
