@@ -95,8 +95,8 @@ const Index = () => {
           </button>
         </div>
       )}
-      <footer className="flex items-center justify-center absolute bottom-1 font-thin right-4">
-        <p>Developed by Tjarirove</p>
+      <footer className="flex items-center justify-center fixed bottom-1 font-thin right-4">
+        <p>Developed by <a className="underline" href="https://github.com/DenilsonUariua" target="_blank">Tjarirove</a></p>
       </footer>
     </div>
   );
