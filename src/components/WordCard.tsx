@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
+import { likeWord, unlikeWord } from "@/lib/utils";
 
 interface WordDefinition {
   type: string;
@@ -15,36 +16,78 @@ interface WordCardProps {
   word: string;
   pronunciation: string;
   definitions: WordDefinition[];
+  likes: number;
 }
 
-export const WordCard = ({ word, pronunciation, definitions }: WordCardProps) => {
+export const WordCard = ({
+  word,
+  pronunciation,
+  definitions,
+  likes,
+}: WordCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
+  const [likeCount, setLikeCount] = useState(likes || 0);
   const { toast } = useToast();
 
-  const handleLike = () => {
-    setIsLiked(!isLiked);
-    setLikeCount(prev => isLiked ? prev - 1 : prev + 1);
-    toast({
-      description: !isLiked ? `Liked ${word}` : `Unliked ${word}`,
-    });
+  const handleLike = (word: string) => {
+    if (!isLiked) {
+      likeWord(word)
+        .then(() => {
+          setIsLiked(!isLiked);
+          setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+          toast({
+            description: !isLiked ? `Liked ${word}` : `Unliked ${word}`,
+          });
+        })
+        .catch((error) => {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: `Failed to like ${word}`,
+          });
+          console.error(error);
+        });
+    } else {
+      unlikeWord(word)
+        .then(() => {
+          setIsLiked(!isLiked);
+          setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+          toast({
+            description: !isLiked ? `Liked ${word}` : `Unliked ${word}`,
+          });
+        })
+        .catch((error) => {
+          toast({
+            variant: "destructive",
+            title: "Error",
+            description: `Failed to unlike ${word}`,
+          });
+        });
+    }
   };
-
   return (
     <Card className="dictionary-card w-full h-full">
       <CardHeader className="p-4">
         <CardTitle className="flex items-center justify-between text-lg">
           <span className="font-bold">{word}</span>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">{pronunciation}</span>
+            <span className="text-xs text-muted-foreground">
+              {pronunciation}
+            </span>
             <div className="relative flex items-center">
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={handleLike}
-                className={isLiked ? "text-red-500 hover:text-red-600 p-1" : "text-muted-foreground p-1"}
+                onClick={() => handleLike(word)}
+                className={
+                  isLiked
+                    ? "text-red-500 hover:text-red-600 p-1"
+                    : "text-muted-foreground p-1"
+                }
               >
-                <Heart className={isLiked ? "fill-current h-4 w-4" : "h-4 w-4"} />
+                <Heart
+                  className={isLiked ? "fill-current h-4 w-4" : "h-4 w-4"}
+                />
               </Button>
               <span className="text-xs font-medium ml-1">{likeCount}</span>
             </div>

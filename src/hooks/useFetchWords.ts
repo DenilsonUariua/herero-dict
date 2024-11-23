@@ -8,12 +8,13 @@ interface Definition {
   example: string;
 }
 
-interface Word {
+export interface Word {
   _id: string;
   word: string;
   pronunciation: string;
   definitions: Definition[];
   dateAdded: string;
+  likes: number;
   lastModified: string;
   __v: number;
 }
