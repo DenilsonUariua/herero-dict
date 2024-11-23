@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { SearchBar } from "@/components/SearchBar";
 import { WordCard } from "@/components/WordCard";
-import {mockWords} from '../mock-data/words'
 import useFetchWords from "@/hooks/useFetchWords";
-
-// Mock data - replace with actual dictionary data
-
 
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
