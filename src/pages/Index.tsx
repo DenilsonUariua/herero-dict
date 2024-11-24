@@ -1,8 +1,7 @@
-import { useState } from "react";
 import { SearchBar } from "@/components/SearchBar";
 import { WordCard } from "@/components/WordCard";
 import useFetchWords from "@/hooks/useFetchWords";
-import { Button } from "@/components/ui/button";
+import CountUp from 'react-countup';
 
 const Index = () => {
   // const [searchTerm, setSearchTerm] = useState("");
@@ -53,7 +52,7 @@ const Index = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
         {words.map((word, index) => (
-          <WordCard key={index} {...word} />
+          <WordCard key={index} {...word} refresh={refresh}/>
         ))}
         {showMessage()}
       </div>
@@ -93,6 +92,10 @@ const Index = () => {
           </button>
         </div>
       )}
+      <div className="flex items-center justify-center gap-4 flex-row">
+        <p className="text-2xl font-extrabold">Total Words:</p>
+        <CountUp className="text-2xl font-extrabold" start={0} end={totalWords} separator="," duration={5} />
+      </div>
       <footer className="flex items-center justify-center fixed bottom-1 font-thin right-4">
         <p className="text-xs">Developed by <a className="underline" href="https://github.com/DenilsonUariua" target="_blank">Tjarirove</a></p>
       </footer>

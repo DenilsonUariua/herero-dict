@@ -17,6 +17,7 @@ interface WordCardProps {
   pronunciation: string;
   definitions: WordDefinition[];
   likes: number;
+  refresh: () => void;
 }
 
 export const WordCard = ({
@@ -24,11 +25,12 @@ export const WordCard = ({
   pronunciation,
   definitions,
   likes,
+  refresh,
 }: WordCardProps) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes || 0);
   const { toast } = useToast();
- 
+
   useEffect(() => {
     setLikeCount(likes);
   }, [likes]);
@@ -47,6 +49,7 @@ export const WordCard = ({
           toast({
             description: !isLiked ? `Liked ${word}` : `Unliked ${word}`,
           });
+          refresh();
         })
         .catch((error) => {
           toast({
@@ -64,6 +67,7 @@ export const WordCard = ({
           toast({
             description: !isLiked ? `Liked ${word}` : `Unliked ${word}`,
           });
+          refresh();
         })
         .catch((error) => {
           toast({
