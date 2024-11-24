@@ -78,11 +78,15 @@ export const WordCard = ({
         });
     }
   };
+  function cleanWord(word) {
+    return word.replace(/-\s*\d+$/, "").trim();
+  }
+
   return (
     <Card className="dictionary-card w-full h-full">
       <CardHeader className="p-4">
         <CardTitle className="flex items-center justify-between text-lg">
-          <span className="font-bold">{word}</span>
+          <span className="font-bold">{cleanWord(word)}</span>
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground">
               {pronunciation}
