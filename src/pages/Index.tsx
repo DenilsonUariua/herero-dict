@@ -4,7 +4,7 @@ import { WordCard } from "@/components/WordCard";
 import useFetchWords from "@/hooks/useFetchWords";
 
 const Index = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
   const {
     words,
     currentPage,
@@ -16,15 +16,12 @@ const Index = () => {
     goToPage,
     changeLimit,
     refresh,
+    handleSearch,
+    searchTerm,
   } = useFetchWords();
-  const filteredWords = words.filter((word) =>
-    word.definitions.some((definition) =>
-      definition.definition.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
-
+  
   const showMessage = () => {
-    if (filteredWords.length === 0 && !loading) {
+    if (words.length === 0 && !loading) {
       return (
         <p className="text-center text-muted-foreground col-span-full">
           No words found matching &quot;{searchTerm}&quot;
@@ -51,16 +48,16 @@ const Index = () => {
         </p>
       </header>
 
-      <SearchBar onSearch={setSearchTerm} />
+      <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
-        {filteredWords.map((word, index) => (
+        {words.map((word, index) => (
           <WordCard key={index} {...word} />
         ))}
         {showMessage()}
       </div>
 
-      {words.length > 0 && filteredWords.length > 0 && (
+      {words.length > 0 && (
         <div className="flex items-center justify-center gap-4">
           <button
             onClick={prevPage}
@@ -96,7 +93,7 @@ const Index = () => {
         </div>
       )}
       <footer className="flex items-center justify-center fixed bottom-1 font-thin right-4">
-        <p>Developed by <a className="underline" href="https://github.com/DenilsonUariua" target="_blank">Tjarirove</a></p>
+        <p className="text-xs">Developed by <a className="underline" href="https://github.com/DenilsonUariua" target="_blank">Tjarirove</a></p>
       </footer>
     </div>
   );
