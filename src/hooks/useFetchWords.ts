@@ -122,7 +122,7 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   const fetchWords = async (page: number = currentPage, itemsPerPage: number = limit, search: string = searchTerm) => {
     setLoading(true);
     setError(null);
-    
+    forceRefresh();
     // Check cache first
     const cachedData = getCachedData(page, itemsPerPage, search);
     if (cachedData) {

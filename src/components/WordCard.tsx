@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { likeWord, unlikeWord } from "@/lib/utils";
 
@@ -28,7 +28,16 @@ export const WordCard = ({
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(likes || 0);
   const { toast } = useToast();
+ 
+  useEffect(() => {
+    setLikeCount(likes);
+  }, [likes]);
 
+  /**
+   * Handles liking or unliking a word.
+   * If the word is not currently liked, it will be liked. If the word is currently liked, it will be unliked.
+   * @param {string} word The word to like or unlike
+   */
   const handleLike = (word: string) => {
     if (!isLiked) {
       likeWord(word)

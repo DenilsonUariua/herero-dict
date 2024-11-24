@@ -2,6 +2,7 @@ import { useState } from "react";
 import { SearchBar } from "@/components/SearchBar";
 import { WordCard } from "@/components/WordCard";
 import useFetchWords from "@/hooks/useFetchWords";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   // const [searchTerm, setSearchTerm] = useState("");
@@ -19,7 +20,7 @@ const Index = () => {
     handleSearch,
     searchTerm,
   } = useFetchWords();
-  
+
   const showMessage = () => {
     if (words.length === 0 && !loading) {
       return (
