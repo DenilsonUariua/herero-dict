@@ -29,8 +29,6 @@ export const WordCard = ({
     setLikeCount(likes);
   }, [likes]);
 
-console.log("Definitions: ", definitions);
-
   /**
    * If the word is not currently liked, it will be liked. If the word is currently liked, it will be unliked.
    * @param {string} word The word to like or unlike
