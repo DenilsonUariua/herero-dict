@@ -2,9 +2,6 @@ import { envConfigs } from '@/configs/env-configs';
 import { useState, useEffect } from 'react';
 import { Client, Databases, Query, Models } from 'appwrite';
 
-
-
-
 export interface Word extends Models.Document {
   word: string;
   pronunciation: string;
@@ -15,7 +12,6 @@ export interface Word extends Models.Document {
   originalWord?: string; // Optional - used for bulk imports
   modified?: boolean; // Optional - indicates if word was renamed
 }
-
 
 interface WordsResponse {
   documents: Word[];
