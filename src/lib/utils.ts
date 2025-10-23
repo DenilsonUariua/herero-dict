@@ -2,55 +2,53 @@ import { envConfigs } from "@/configs/env-configs";
 import { Word } from "@/hooks/useFetchWords";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Client, Databases, Query } from 'appwrite';
+
+const client = new Client()
+  .setEndpoint(envConfigs.appwriteEndpoint)
+  .setProject(envConfigs.appwriteProjectId);
+
+const databases = new Databases(client);
+
+const DATABASE_ID = 'YOUR_APPWRITE_DATABASE_ID'; // Replace with your Appwrite Database ID
+const COLLECTION_ID = 'YOUR_APPWRITE_COLLECTION_ID'; // Replace with your Appwrite Collection ID
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const likeWord = async (word: string) => {
-  const { apiBaseUrl } = envConfigs;
-
+export const likeWord = async (wordId: string) => {
   try {
-    const response = await fetch(`${apiBaseUrl}/api/words/${word}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ incrementLikes: true }), // Pass a flag to indicate the "like" action
-    });
+    const currentWord = await databases.getDocument(DATABASE_ID, COLLECTION_ID, wordId);
+    const updatedLikes = currentWord.likes + 1;
 
-    if (!response.ok) {
-      throw new Error(`Failed to like the word: ${response.statusText}`);
-    }
-
-    const updatedWord = await response.json();
+    const updatedWord = await databases.updateDocument(
+      DATABASE_ID,
+      COLLECTION_ID,
+      wordId,
+      { likes: updatedLikes }
+    );
     return updatedWord;
   } catch (error) {
     console.error("Error liking word:", error);
     throw error;
   }
-}
+};
 
-export const unlikeWord = async (word: string) => {
-  const { apiBaseUrl } = envConfigs;
-
+export const unlikeWord = async (wordId: string) => {
   try {
-    const response = await fetch(`${apiBaseUrl}/api/words/${word}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ decrementLikes: true }), // Pass a flag to indicate the "unlike" action
-    });
+    const currentWord = await databases.getDocument(DATABASE_ID, COLLECTION_ID, wordId);
+    const updatedLikes = currentWord.likes - 1;
 
-    if (!response.ok) {
-      throw new Error(`Failed to unlike the word: ${response.statusText}`);
-    }
-
-    const updatedWord = await response.json();
+    const updatedWord = await databases.updateDocument(
+      DATABASE_ID,
+      COLLECTION_ID,
+      wordId,
+      { likes: updatedLikes }
+    );
     return updatedWord;
   } catch (error) {
     console.error("Error unliking word:", error);
     throw error;
   }
-}
+};

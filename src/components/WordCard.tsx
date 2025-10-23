@@ -6,16 +6,10 @@ import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { likeWord, unlikeWord } from "@/lib/utils";
 
-interface WordDefinition {
-  type: string;
-  definition: string;
-  example?: string;
-}
-
 interface WordCardProps {
   word: string;
   pronunciation: string;
-  definitions: WordDefinition[];
+  definitions: string[];
   likes: number;
   refresh: () => void;
 }
@@ -35,8 +29,9 @@ export const WordCard = ({
     setLikeCount(likes);
   }, [likes]);
 
+console.log("Definitions: ", definitions);
+
   /**
-   * Handles liking or unliking a word.
    * If the word is not currently liked, it will be liked. If the word is currently liked, it will be unliked.
    * @param {string} word The word to like or unlike
    */
@@ -115,14 +110,9 @@ export const WordCard = ({
         {definitions.map((def, index) => (
           <div key={index} className="space-y-1">
             <Badge variant="secondary" className="text-xs">
-              {def.type}
+             <p>{index + 1}</p>
             </Badge>
-            <p className="text-sm text-foreground">{def.definition}</p>
-            {def.example && (
-              <p className="text-xs text-muted-foreground italic">
-                &quot;{def.example}&quot;
-              </p>
-            )}
+            <p className="text-sm text-foreground">{def}</p>
           </div>
         ))}
       </CardContent>

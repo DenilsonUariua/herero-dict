@@ -1,29 +1,25 @@
 import { envConfigs } from '@/configs/env-configs';
 import { useState, useEffect } from 'react';
+import { Client, Databases, Query, Models } from 'appwrite';
 
-interface Definition {
-  _id: string;
-  type: string;
-  definition: string;
-  example: string;
-}
 
-export interface Word {
-  _id: string;
+
+
+export interface Word extends Models.Document {
   word: string;
   pronunciation: string;
-  definitions: Definition[];
-  dateAdded: string;
+  definitions: string[]; // Will be stored as JSON string
+  dateAdded: string; // DateTime from Appwrite
+  lastModified: string; // DateTime from Appwrite
   likes: number;
-  lastModified: string;
-  __v: number;
+  originalWord?: string; // Optional - used for bulk imports
+  modified?: boolean; // Optional - indicates if word was renamed
 }
 
+
 interface WordsResponse {
-  words: Word[];
-  currentPage: number;
-  totalPages: number;
-  totalWords: number;
+  documents: Word[];
+  total: number;
 }
 
 interface UseFetchWordsParams {
@@ -43,6 +39,15 @@ interface CacheData {
 const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
 const CACHE_KEY = 'words_cache';
 
+const client = new Client()
+  .setEndpoint(envConfigs.appwriteEndpoint)
+  .setProject(envConfigs.appwriteProjectId);
+
+const databases = new Databases(client);
+
+const DATABASE_ID = envConfigs.appwriteDatabaseId; // Replace with your Appwrite Database ID
+const COLLECTION_ID = envConfigs.appwriteCollectionId; // Replace with your Appwrite Collection ID
+
 export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWordsParams = {}) => {
   const [words, setWords] = useState<Word[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -52,11 +57,10 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   const [totalWords, setTotalWords] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { apiBaseUrl } = envConfigs;
 
   // Cache management functions
-  const getCacheKey = (page: number, itemsPerPage: number, search: string) => {
-    return `${page}-${itemsPerPage}-${search}`;
+  const getCacheKey = (offset: number, itemsPerPage: number, search: string) => {
+    return `${offset}-${itemsPerPage}-${search}`;
   };
 
   const getCache = (): CacheData => {
@@ -95,9 +99,9 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
     setCache(freshCache);
   };
 
-  const getCachedData = (page: number, itemsPerPage: number, search: string): WordsResponse | null => {
+  const getCachedData = (offset: number, itemsPerPage: number, search: string): WordsResponse | null => {
     const cache = getCache();
-    const cacheKey = getCacheKey(page, itemsPerPage, search);
+    const cacheKey = getCacheKey(offset, itemsPerPage, search);
     const cacheEntry = cache[cacheKey];
 
     if (cacheEntry && Date.now() - cacheEntry.timestamp < CACHE_DURATION) {
@@ -107,9 +111,9 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
     return null;
   };
 
-  const setCachedData = (page: number, itemsPerPage: number, search: string, data: WordsResponse) => {
+  const setCachedData = (offset: number, itemsPerPage: number, search: string, data: WordsResponse) => {
     const cache = getCache();
-    const cacheKey = getCacheKey(page, itemsPerPage, search);
+    const cacheKey = getCacheKey(offset, itemsPerPage, search);
     
     cache[cacheKey] = {
       data,
@@ -122,41 +126,47 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   const fetchWords = async (page: number = currentPage, itemsPerPage: number = limit, search: string = searchTerm) => {
     setLoading(true);
     setError(null);
+    const offset = (page - 1) * itemsPerPage;
+
     // Check cache first
-    const cachedData = getCachedData(page, itemsPerPage, search);
+    const cachedData = getCachedData(offset, itemsPerPage, search);
     if (cachedData) {
-      setWords(cachedData.words);
-      setCurrentPage(cachedData.currentPage);
-      setTotalPages(cachedData.totalPages);
-      setTotalWords(cachedData.totalWords);
+      setWords(cachedData.documents);
+      setTotalWords(cachedData.total);
+      setTotalPages(Math.ceil(cachedData.total / itemsPerPage));
       setLoading(false);
       return;
     }
 
     try {
-      const queryParams = new URLSearchParams({
-        page: page.toString(),
-        limit: itemsPerPage.toString(),
-        ...(search && { q: search })
-      });
-      
-      const response = await fetch(
-        `${apiBaseUrl}/api/words${search ? '/search' : ''}?${queryParams}`
-      );
-      
-      if (!response.ok) {
-        throw new Error('Failed to fetch words');
+      const queries = [
+        Query.limit(itemsPerPage),
+        Query.offset(offset),
+      ];
+
+      if (search) {
+        queries.push(Query.search('word', search));
       }
       
-      const data: WordsResponse = await response.json();
+      // Type the response as Word documents
+      const response = await databases.listDocuments<Word>(
+        DATABASE_ID,
+        COLLECTION_ID,
+        queries
+      );
+      
+      // Transform response to WordsResponse format
+      const wordsResponse: WordsResponse = {
+        documents: response.documents as Word[],
+        total: response.total
+      };
       
       // Cache the response
-      setCachedData(page, itemsPerPage, search, data);
+      setCachedData(offset, itemsPerPage, search, wordsResponse);
 
-      setWords(data.words);
-      setCurrentPage(data.currentPage);
-      setTotalPages(data.totalPages);
-      setTotalWords(data.totalWords);
+      setWords(wordsResponse.documents);
+      setTotalWords(wordsResponse.total);
+      setTotalPages(Math.ceil(wordsResponse.total / itemsPerPage));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred');
     } finally {
@@ -168,18 +178,21 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   const handleSearch = (term: string) => {
     setSearchTerm(term);
     // Reset to first page when searching
+    setCurrentPage(1);
     fetchWords(1, limit, term);
   };
 
   // Function to change items per page
   const changeLimit = (newLimit: number) => {
     setLimit(newLimit);
+    setCurrentPage(1);
     fetchWords(1, newLimit, searchTerm);
   };
 
   // Function to go to next page
   const nextPage = () => {
     if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
       fetchWords(currentPage + 1, limit, searchTerm);
     }
   };
@@ -187,6 +200,7 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   // Function to go to previous page
   const prevPage = () => {
     if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
       fetchWords(currentPage - 1, limit, searchTerm);
     }
   };
@@ -194,6 +208,7 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   // Function to go to specific page
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
       fetchWords(page, limit, searchTerm);
     }
   };
@@ -201,7 +216,8 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   // Function to force refresh data from API
   const forceRefresh = async () => {
     const cache = getCache();
-    const cacheKey = getCacheKey(currentPage, limit, searchTerm);
+    const offset = (currentPage - 1) * limit;
+    const cacheKey = getCacheKey(offset, limit, searchTerm);
     delete cache[cacheKey];
     setCache(cache);
     await fetchWords(currentPage, limit, searchTerm);
@@ -215,7 +231,7 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   // Initial fetch
   useEffect(() => {
     fetchWords();
-  }, []); // Empty dependency array for initial fetch only
+  }, [currentPage, limit, searchTerm]); // Add dependencies for re-fetching when pagination/search changes
 
   return {
     words,
