@@ -2,6 +2,7 @@ import { SearchBar } from "@/components/SearchBar";
 import { WordCard } from "@/components/WordCard";
 import useFetchWords from "@/hooks/useFetchWords";
 import CountUp from 'react-countup';
+import MetaTags from "@/components/MetaTags";
 
 const Index = () => {
   // const [searchTerm, setSearchTerm] = useState("");
@@ -38,7 +39,11 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen p-6 space-y-6">
+    <main className="min-h-screen p-6 space-y-6">
+      <MetaTags
+        title="Otjherero Dictionary - Discover the Otjiherero Language"
+        description="Explore and discover words from the Otjiherero language. Search for definitions, pronunciations, and more."
+      />
       <header className="text-center space-y-4 mb-8">
         <h1 className="text-4xl font-bold text-foreground">
           Otjherero Dictionary
@@ -50,12 +55,12 @@ const Index = () => {
 
       <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
         {words.map((word, index) => (
           <WordCard key={index} {...word} refresh={refresh}/>
         ))}
         {showMessage()}
-      </div>
+      </section>
 
       {words.length > 0 && (
         <div className="flex items-center justify-center gap-4">
@@ -99,7 +104,7 @@ const Index = () => {
       <footer className="flex items-center justify-center fixed bottom-1 font-thin right-4">
         <p className="text-xs">Developed by <a className="underline" href="https://github.com/DenilsonUariua" target="_blank">Tjarirove</a></p>
       </footer>
-    </div>
+    </main>
   );
 };
 

@@ -76,12 +76,12 @@ export const WordCard = ({
   }
 
   return (
-    <Card className="dictionary-card w-full h-full">
+    <Card className="dictionary-card w-full h-full" itemScope itemType="https://schema.org/DefinedTerm">
       <CardHeader className="p-4">
         <CardTitle className="flex items-center justify-between text-lg">
-          <span className="font-bold">{cleanWord(word)}</span>
+          <span className="font-bold" itemProp="name">{cleanWord(word)}</span>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-muted-foreground">
+            <span className="text-xs text-muted-foreground" itemProp="alternateName">
               {pronunciation}
             </span>
             <div className="relative flex items-center">
@@ -110,7 +110,7 @@ export const WordCard = ({
             <Badge variant="secondary" className="text-xs">
              <p>{index + 1}</p>
             </Badge>
-            <p className="text-sm text-foreground">{def}</p>
+            <p className="text-sm text-foreground" itemProp="description">{def}</p>
           </div>
         ))}
       </CardContent>

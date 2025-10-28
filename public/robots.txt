@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /
+
+Sitemap: https://herero-dict.vercel.app/sitemap.xml
