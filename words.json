@@ -1,914 +1,1010 @@
 [
     {
-        "word": "BLESSING",
-        "pronunciation": "(ozo-)",
-        "definitions": "ondayaya",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BLIND",
-        "pronunciation": "(ozo-)",
-        "definitions": "potjuparisa. - EYE/ondwinga. THE MAN WHO HAS A BLIND EYE, CANNOT SEE/Omundu u nondwinga, ka munu. - PERSON/omupotu (ova-)",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BLINDNESS",
-        "pronunciation": "",
-        "definitions": "oupotu.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BLISTER",
-        "pronunciation": "(oma-)",
-        "definitions": "etwiyu",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BLOCKED",
-        "pronunciation": "",
-        "definitions": "korongana. THE PIPE IS BLOCKED, THE WATER DOES NOT COME OUT/Omuryu wa korongana, omeva kaye nokupita.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BLOOD",
-        "pronunciation": "(oma-)",
-        "definitions": "ombingu. - DISEASE/etera. LET -/kwika(e). BLOOD-THIRSTY PERSON/otjimbarungwe (ovi-)",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BLOW",
-        "pronunciation": "(e)",
-        "definitions": "suvira.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BLOW (FAN)",
-        "pronunciation": "",
-        "definitions": "hohiza.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BLOW",
-        "pronunciation": "(i)",
-        "definitions": "hinga. THE WIND BLOWS STRONGLY/Ombepo mai hingi nomasa. -/singa(i). THE WIND BLOWS/Ombepo mai singi.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BLUNT",
-        "pronunciation": "",
-        "definitions": "-ti. THE BLUNT KNIFE/oruvyo oruti.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BOAST",
-        "pronunciation": "(e)",
-        "definitions": "nyenyena, rihiva.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BOASTING",
-        "pronunciation": "(oma-)",
-        "definitions": "enyenyo",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BODY",
-        "pronunciation": "(otu-)",
-        "definitions": "orutu. DEAD -/omutundu (omi-)",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LACK",
+        "pronunciation": "hepa",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 55
+    },
+    {
+        "word": "LADDER",
+        "pronunciation": "otjirondero (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 67
+    },
+    {
+        "word": "LADY",
+        "pronunciation": "oserekaze (ozo-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 7
+    },
+    {
+        "word": "LADY (YOUNG MISTRESS)",
+        "pronunciation": "omusuko (ova-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 64
+    },
+    {
+        "word": "LAIR",
+        "pronunciation": "oruuto (otu-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 20
+    },
+    {
+        "word": "LAMB",
+        "pronunciation": "okayona (ou), ond jona (ozo-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 51
+    },
+    {
+        "word": "LAMB",
+        "pronunciation": "otjigepo (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 56
+    },
+    {
+        "word": "LAME",
+        "pronunciation": "remana",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 47
+    },
+    {
+        "word": "LAME",
+        "pronunciation": "-tendune",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 52
+    },
+    {
+        "word": "LAME PERSON",
+        "pronunciation": "otjirema (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 29
+    },
+    {
+        "word": "LAMENTATION",
+        "pronunciation": "etando, omutambo",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 65
+    },
+    {
+        "word": "LAMP",
+        "pronunciation": "emunine (oma-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 48
+    },
+    {
+        "word": "LAMPWICK",
+        "pronunciation": "ongoze yemunine",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 11
     },
     {
-        "word": "BOIL",
-        "pronunciation": "(ovi-)",
-        "definitions": "esena, otjindimba, otjindumba",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LAN",
+        "pronunciation": "oveta (020-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 1
     },
     {
-        "word": "BOIL",
-        "pronunciation": "",
-        "definitions": "suma. THE WATER BOILS/omeva maye suma. BOIL THE WATER AND MAKE TEA!/Sumisa omeva nu hanga otee! BOIL OUT FAT OR BUTTER/te-tisa.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LANGUAGE",
+        "pronunciation": "eraka (oma-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 88
     },
     {
-        "word": "BOMB",
-        "pronunciation": "(ozo-)",
-        "definitions": "ombomba",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LANGUAGE: WAMBO",
+        "pronunciation": "Otjiambo",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 14
     },
     {
-        "word": "BONE",
-        "pronunciation": "(oma-)",
-        "definitions": "egupa. SHIN BONE/omuhho (omi-)",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LAP",
+        "pronunciation": "ekoro (oma-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 39
     },
     {
-        "word": "BOOK",
-        "pronunciation": "(oma-)",
-        "definitions": "embo",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LAST",
+        "pronunciation": "-senina",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 45
     },
     {
-        "word": "BOOTY",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjipundwa",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LASTING",
+        "pronunciation": "-karerere",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 31
     },
     {
-        "word": "BORDER",
-        "pronunciation": "(omi-)",
-        "definitions": "omuruko",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LATE",
+        "pronunciation": "omuyaruke (ova-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 86
     },
     {
-        "word": "BORROW",
-        "pronunciation": "",
-        "definitions": "yazema.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LATE: BECOME",
+        "pronunciation": "-toka(o)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 30
     },
     {
-        "word": "BOSCIA ALBITRUNCA",
-        "pronunciation": "(omi-)",
-        "definitions": "omungwindi. FRUIT OF -/ongwindi. ROOT OF -/omundjerere.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LATER",
+        "pronunciation": "kombunda (y-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 27
     },
     {
-        "word": "BOSCIA FOETIDA",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjinautoni",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LAUGH",
+        "pronunciation": "yoralo)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 83
     },
     {
-        "word": "BOSS",
-        "pronunciation": "(ova-)",
-        "definitions": "omuhona",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LAUGHING",
+        "pronunciation": "ondjora (ozo-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 82
     },
     {
-        "word": "BOTH",
-        "pronunciation": "",
-        "definitions": "aveyevari; ALL WORDS IN OVA- CLASS (PEOPLE). BOTH THE CHILDREN/Ovanatje avevevari.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LAUNDRY",
+        "pronunciation": "omakohero",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 69
     },
     {
-        "word": "BOTTLE",
-        "pronunciation": "(oma-)",
-        "definitions": "ekende",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LAZY",
+        "pronunciation": "-natjirweyo",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 47
     },
     {
-        "word": "BOTTLE STORE",
-        "pronunciation": "",
-        "definitions": "ondjuwo yomavinu.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LAZY PERSON",
+        "pronunciation": "omunatjirweyo (ova-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 98
     },
     {
-        "word": "BOW",
-        "pronunciation": "(e)",
-        "definitions": "ripeta.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LAZINESS",
+        "pronunciation": "otjirweyo",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 77
     },
     {
-        "word": "BOW: MUSICAL",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjihumba",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEAD",
+        "pronunciation": "hongora",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 92
     },
     {
-        "word": "BOW-STRING",
-        "pronunciation": "(omi-)",
-        "definitions": "omuko",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEADER",
+        "pronunciation": "omuhongore (ova), chongo-ra (ozo-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 74
     },
     {
-        "word": "BOX",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjipwikiro",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEADWOOD",
+        "pronunciation": "omumborombonga (omi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 40
     },
     {
-        "word": "BOY",
-        "pronunciation": "(ova-)",
-        "definitions": "omuvena, omuzandona",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEAF",
+        "pronunciation": "eso (oma-). (DRY)/otjiyao (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 56
     },
     {
-        "word": "BRACKISH PLACE",
-        "pronunciation": "",
-        "definitions": "otjongwa, otjic-ngwa.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEAK",
+        "pronunciation": "ziza",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 95
     },
     {
-        "word": "BRACKISH PATCH IN THE VELD",
-        "pronunciation": "(otu-)",
-        "definitions": "orunahi",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEAN",
+        "pronunciation": "-rambi, terambu (ta erambu)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 34
     },
     {
-        "word": "BRAG",
-        "pronunciation": "(e)",
-        "definitions": "nyenyena, rihiva.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEAN (ON SOMETHING)",
+        "pronunciation": "tatera",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 55
     },
     {
-        "word": "BRAIN",
-        "pronunciation": "",
-        "definitions": "ouruvi.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEAN OVER",
+        "pronunciation": "yendama",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 86
     },
     {
-        "word": "BRAN",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjisisiiro.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEANING TO",
+        "pronunciation": "hendamena(e) (k)",
+        "definitions": "THE THING IS",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 9
     },
     {
-        "word": "BRAKE",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjireme",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEANING TOWARDS THE HOUSE",
+        "pronunciation": "Otjina tja hendamene kondjuwo",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 24
     },
     {
-        "word": "BRANCH",
-        "pronunciation": "(otu-)",
-        "definitions": "orutavi. BRANCHES ON WHICH TO DRY MEAT/otjihuno (ovi-)",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEANNESS",
+        "pronunciation": "erambu (oma-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 59
     },
     {
-        "word": "BRAVE",
-        "pronunciation": "",
-        "definitions": "-penda.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEANNESS",
+        "pronunciation": "ourambi",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 77
     },
     {
-        "word": "BRAVE",
-        "pronunciation": "",
-        "definitions": "omutima omupenda, otjirumendu. I WORK LIKE A MAN/Me ungura otjorumendu. BECOME -/pendapara. BRAVE PERSON/ombangane (ozo-)",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEARN",
+        "pronunciation": "rihonga(o)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 32
     },
     {
-        "word": "BRAVERY",
-        "pronunciation": "",
-        "definitions": "oupenda, ourumendu, ouva-nge.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEAVE",
+        "pronunciation": "kuka",
+        "definitions": "I LEFT/Ami mbe kuka. - ALONE/esa; LEAVE ME ALONE:/ Ndji esa! - BEHIND/sya.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 20
     },
     {
-        "word": "BREAD",
-        "pronunciation": "(ozo-)",
-        "definitions": "omboroto. SOFT PART OF -/otjinyama (ovi-). MOULDY -/ondeva.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEAVEN",
+        "pronunciation": "worisa",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 2
     },
     {
-        "word": "BREADTH",
-        "pronunciation": "",
-        "definitions": "omaparangero, ouparanga.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEAVEN",
+        "pronunciation": "otjiworise",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 98
     },
     {
-        "word": "BREAK",
-        "pronunciation": "",
-        "definitions": "koyoka, teka. THE PEN BROKE/Opena ya koyoka. BREAK/koyora, teya. I BREAK THE PEN/Me koyora opena. BREAK UP (IN SMALL PARTS)/mengura, timbura.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEG",
+        "pronunciation": "okurama (oma-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 20
     },
     {
-        "word": "BREAD-CRUMB",
-        "pronunciation": "(ou-)",
-        "definitions": "okamborokokotwa",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEG",
+        "pronunciation": "otjiryo (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 64
     },
     {
-        "word": "BREAK (BITE) OFF",
-        "pronunciation": "",
-        "definitions": "humbura.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEG OF A THREELEGGED POT",
+        "pronunciation": "omukono (omi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 78
     },
     {
-        "word": "BREAK",
-        "pronunciation": "",
-        "definitions": "hahuara.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEGGING",
+        "pronunciation": "otjikamasa (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 20
     },
     {
-        "word": "BREAK",
-        "pronunciation": "",
-        "definitions": "nyanyaura.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEMON",
+        "pronunciation": "otjitorone (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 68
     },
     {
-        "word": "BREAK",
-        "pronunciation": "(ozo-)",
-        "definitions": "osuviriro. SHORT BREAK/okarusuvG.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEND",
+        "pronunciation": "yazema",
+        "definitions": "- OUT/yazemisa.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 56
     },
     {
-        "word": "BREAKABLE (E.G. DRY BRANCH)",
-        "pronunciation": "",
-        "definitions": "-koyoke.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LENGTH",
+        "pronunciation": "oure",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 5
     },
     {
-        "word": "BREAST",
-        "pronunciation": "(oma-)",
-        "definitions": "evere",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LENGTHEN",
+        "pronunciation": "reparisa",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 64
     },
     {
-        "word": "BREAST",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjari (otji + ari)",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LENGTHENING",
+        "pronunciation": "omananukiro",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 66
     },
     {
-        "word": "BREATH",
-        "pronunciation": "(omi-)",
-        "definitions": "omuinyo",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEOPARD",
+        "pronunciation": "ongwe (ozo-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 27
     },
     {
-        "word": "BREATHE",
-        "pronunciation": "",
-        "definitions": "heukana, suvuna. BREATHE ONE'S LAST/osenda.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LEPROSY",
+        "pronunciation": "omutjise wongana",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 95
     },
     {
-        "word": "BREATHING",
-        "pronunciation": "(omi-)",
-        "definitions": "omusuvaND",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LESS: BECOME",
+        "pronunciation": "-henguruka, henduru-ka",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 77
     },
     {
-        "word": "BREEDER: LUCKY CATTLE",
-        "pronunciation": "(otu-)",
-        "definitions": "oruhoNgwe",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LESSEN (E.G. SALT, SUGAR, ETC.)",
+        "pronunciation": "hahuruka",
+        "definitions": "THE SALT IN THE FOOD BECAME LESS/Omongwa mbwa ri mo-vikurya wa hahuruka.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 99
     },
     {
-        "word": "BREW STRONG BEER",
-        "pronunciation": "",
-        "definitions": "kandisa.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LET WATER",
+        "pronunciation": "nyina(e)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 63
     },
     {
-        "word": "BREEZE",
-        "pronunciation": "",
-        "definitions": "orumwinyo.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LETHARGY",
+        "pronunciation": "epondo, eseno",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 26
     },
     {
-        "word": "BRICK",
-        "pronunciation": "(ozo-)",
-        "definitions": "ohima",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LETTER",
+        "pronunciation": "oletera (ozo-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 18
     },
     {
-        "word": "BRIDE",
-        "pronunciation": "(ova-)",
-        "definitions": "omukupwa",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LETTER",
+        "pronunciation": "ombirive (ozo-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 84
     },
     {
-        "word": "BRIDEGROOM",
-        "pronunciation": "(ova-)",
-        "definitions": "omukupe",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIAR",
+        "pronunciation": "omunavizeze (ova-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 70
     },
     {
-        "word": "BRIDESMAID",
-        "pronunciation": "(ova-)",
-        "definitions": "omutike",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LICENTIOUS PERSON",
+        "pronunciation": "omuhambangombe (ova-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 76
     },
     {
-        "word": "BRIGHT",
-        "pronunciation": "",
-        "definitions": "-yere.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LICK",
+        "pronunciation": "rasa",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 47
     },
     {
-        "word": "BRIGHTNESS",
-        "pronunciation": "",
-        "definitions": "cuyere.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LID",
+        "pronunciation": "otjikamo (ovi-), otjipapeko (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 1
     },
     {
-        "word": "BRING",
-        "pronunciation": "",
-        "definitions": ":eta! -/hihiza. I BRING FOOD FOR THE BOSS/Me hihiza ovikurya komuhona. - BACK/kotora. - CLOSER/minuna. BRING DOWN/raura. - INTO/hitisa. BRING THE CATTLE INTO THE KRAAL!/Hitisa ozongombe motjunda! BRING ME!/Mbandjeo! Sin. Mbandje. - UP/kurisa.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIE",
+        "pronunciation": "hungira ovizeze",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 39
     },
     {
-        "word": "BROKEN",
-        "pronunciation": "",
-        "definitions": "hahauka. THE CAR IS BROKEN/Otjihauto tja hahauka.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIE",
+        "pronunciation": "otjizeze (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 46
     },
     {
-        "word": "BROKEN",
-        "pronunciation": "",
-        "definitions": "poka.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIE DOWN",
+        "pronunciation": "rara, rangavara, randana",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 64
     },
     {
-        "word": "BROOM",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjikombo",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIFE",
+        "pronunciation": "omuinyo (omi-)",
+        "definitions": "IS THE SHEEP ALIVE OR IS IT DEAD?/Ondu i no-muinyo poo ya koka?",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 34
     },
     {
-        "word": "BROTHER",
-        "pronunciation": "(oma-)",
-        "definitions": "MALE PERSON'S ELDER -/erumbi. MALE'S YOUNGER -/omuangu (ova-). -/omutjena (ova-)",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIFE: GIVE",
+        "pronunciation": "-pepera(e)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 67
     },
     {
-        "word": "BROTHERHOOD (OLDER)",
-        "pronunciation": "",
-        "definitions": "ourumbi.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIFT",
+        "pronunciation": "toora",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 40
     },
     {
-        "word": "BROTHERHOOD",
-        "pronunciation": "",
-        "definitions": "ouangu.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIFT",
+        "pronunciation": "yera(e)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 6
     },
     {
-        "word": "BROWN",
-        "pronunciation": "",
-        "definitions": "-honi.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIGHT",
+        "pronunciation": "hwika(e)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 98
     },
     {
-        "word": "BRUISE",
-        "pronunciation": "",
-        "definitions": "tukutura.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIGHT",
+        "pronunciation": "ondjerera (ozo-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 26
     },
     {
-        "word": "BRUISE",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjikundira",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIGHT",
+        "pronunciation": "otjimunine (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 68
     },
     {
-        "word": "BUCHU",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjizumba",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIGHT",
+        "pronunciation": "-pepu",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 34
     },
     {
-        "word": "BUCKET",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjienere",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIGHT",
+        "pronunciation": "-pupu",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 12
     },
     {
-        "word": "BUD",
-        "pronunciation": "",
-        "definitions": "nyomoka.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIGHT (FIRE)",
+        "pronunciation": "kamburisa, yakisa",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 65
     },
     {
-        "word": "BUD",
-        "pronunciation": "(ozo-)",
-        "definitions": "osunda",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIGHT COLOURED PERSON",
+        "pronunciation": "omuserandu (ova-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 16
     },
     {
-        "word": "BUFFALO",
-        "pronunciation": "(ozo-)",
-        "definitions": "onyati",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIGHT GREY",
+        "pronunciation": "-rovazu",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 34
     },
     {
-        "word": "BUG: TUMBLE",
-        "pronunciation": "(oma-)",
-        "definitions": "etunguuse",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIGHT: BECOME",
+        "pronunciation": "-tja(1)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 26
     },
     {
-        "word": "BUILD",
-        "pronunciation": "(u)",
-        "definitions": "tunga",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIKE",
+        "pronunciation": "tji na",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 25
     },
     {
-        "word": "BUILDER",
-        "pronunciation": "(ova-)",
-        "definitions": "omutunge",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIKE",
+        "pronunciation": "tjimuna",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 92
     },
     {
-        "word": "BUILT",
-        "pronunciation": "(oma-)",
-        "definitions": "STRONGLY -/ekuryoma. STRONGLY BUILT CALF/ondana ekuryoma. STRONGLY BUILT PERSON/Omundu ekuryoma.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIKE THIS",
+        "pronunciation": "nai",
+        "definitions": "WORK LIKE THIS!/Ungura nai! WORK ACCORDING TO A GIVEN EXAMPLE/Ungura nao!",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 28
     },
     {
-        "word": "BULL",
-        "pronunciation": "(ozo-)",
-        "definitions": "ondwezu",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIMP",
+        "pronunciation": "tenduna",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 29
     },
     {
-        "word": "BULLET",
-        "pronunciation": "(ozo-)",
-        "definitions": "ohanga",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LINE",
+        "pronunciation": "oruteto (otu-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 98
     },
     {
-        "word": "BUNCH OF GRAPES",
-        "pronunciation": "(oma-)",
-        "definitions": "epunda. /epunda romandjem-bere.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LINGER",
+        "pronunciation": "kundja (u)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 38
     },
     {
-        "word": "BUNDLE",
-        "pronunciation": "(ozo-)",
-        "definitions": "ohuto",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LION",
+        "pronunciation": "ondumbi (ozc-), ongeyama (oz0-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 77
     },
     {
-        "word": "BURIAL",
-        "pronunciation": "(ozo-)",
-        "definitions": "ombakero",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LION",
+        "pronunciation": "ongeyama (ozo-), ondumbi",
+        "definitions": "MR. /Kaurimbi.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 14
     },
     {
-        "word": "BURKEA AFRICANA",
-        "pronunciation": "(omi-)",
-        "definitions": "omutundungu",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIP",
+        "pronunciation": "omuna (omi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 88
     },
     {
-        "word": "BURN",
-        "pronunciation": "(pi)",
-        "definitions": "pya. I BURNT MYSELF AGAINST THE HOT STOVE/Mba pi kezuko epyu.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LISTEN",
+        "pronunciation": "puratena(e)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 32
     },
     {
-        "word": "BURN",
-        "pronunciation": "",
-        "definitions": "nyosa. THE SUN IS BURNING ME/Eyuvia mari ndji nyosa.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LISTENER",
+        "pronunciation": "omupuratene (ova-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 89
     },
     {
-        "word": "BURN",
-        "pronunciation": "",
-        "definitions": "yaka. THE FIRE BURNT/Omuriro wa yaka.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LITTER",
+        "pronunciation": "oruara (otu-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 94
     },
     {
-        "word": "BURN (MARK ON THE ARM AS A DECORATION)",
-        "pronunciation": "(ozo-)",
-        "definitions": "ondikitira",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LITTLE",
+        "pronunciation": "katiti",
+        "definitions": "STAY IN BED FOR A LITTLE WHILE!/Kara kaţiţi mombete!",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 7
     },
     {
-        "word": "BURP",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjive",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIVE",
+        "pronunciation": "kara",
+        "definitions": "- TOGETHER/kara mu-mwe.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 31
     },
     {
-        "word": "BURST (FRUIT)",
-        "pronunciation": "",
-        "definitions": "pamuka.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIVE",
+        "pronunciation": "hupa(u)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 85
     },
     {
-        "word": "BURST",
-        "pronunciation": "",
-        "definitions": "twipa.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIVE",
+        "pronunciation": "tura",
+        "definitions": "I LIVE IN KATUTURA/Mba tura mokatutura.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 73
     },
     {
-        "word": "BURSTING",
-        "pronunciation": "",
-        "definitions": "omapamukiro.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIVER",
+        "pronunciation": "ehuri (oma-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 11
     },
     {
-        "word": "BURY",
-        "pronunciation": "",
-        "definitions": "paka.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIZARD",
+        "pronunciation": "otjikoko (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 50
     },
     {
-        "word": "BURYING",
-        "pronunciation": "",
-        "definitions": "omapakero.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LIZARD SPECIES",
+        "pronunciation": "ondwezuyambunga (Dzo-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 65
     },
     {
-        "word": "BUSH",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjihwa",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LOAD",
+        "pronunciation": "cmutwaro (omi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 87
     },
     {
-        "word": "BUSHMAN",
-        "pronunciation": "(ova-)",
-        "definitions": "omukuruha, omukuuna.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUSTARD",
-        "pronunciation": "(oma-)",
-        "definitions": "etetewe. GIANT -/etuvangoma (oma-). SMALL KORI -/etuva (oma-)",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUT",
-        "pronunciation": "",
-        "definitions": "nungwari.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUTCHER",
-        "pronunciation": "(ova-)",
-        "definitions": "omupurure",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUTT",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjindimbu",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUTTER",
-        "pronunciation": "(ozo-)",
-        "definitions": "ongondivi",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUTTERFLY",
-        "pronunciation": "(ozo-)",
-        "definitions": "ombombo, okavivarira (ou-)",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUTTOCK",
-        "pronunciation": "(oma-)",
-        "definitions": "etako",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUTTON",
-        "pronunciation": "(ozo-)",
-        "definitions": "ombandi",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUY",
-        "pronunciation": "",
-        "definitions": "randa. BOUGHT: BE-/randwa.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUYER",
-        "pronunciation": "(ova-)",
-        "definitions": "omurande",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUYING",
-        "pronunciation": "",
-        "definitions": "omarandero.",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
-    },
-    {
-        "word": "BUYING AID",
-        "pronunciation": "(ovi-)",
-        "definitions": "otjirande",
-        "dateAdded": "2023-10-27T10:00:00Z",
-        "lastModified": "2023-10-27T10:00:00Z",
-        "likes": 0
+        "word": "LOAD",
+        "pronunciation": "turika(e)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 12
+    },
+    {
+        "word": "LOCK",
+        "pronunciation": "pata",
+        "definitions": "LOCK WITH A KEY/pata notjipaturure, yezera(e).",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 98
+    },
+    {
+        "word": "LOCUST",
+        "pronunciation": "ombahu (ozo-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 67
+    },
+    {
+        "word": "LODGE",
+        "pronunciation": "sekirale)",
+        "definitions": "EVERY YEAR OUR FAMILY STAYS WITH US/Omuhoko wetu u sekira poyetu ombura aihe.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 40
+    },
+    {
+        "word": "LOIN",
+        "pronunciation": "otjikondambunda (ovi-), otji-ndeera",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 56
+    },
+    {
+        "word": "LONELINESS",
+        "pronunciation": "kara nguruhu, Dukunga, ourike",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 86
+    },
+    {
+        "word": "LONG",
+        "pronunciation": "hihama",
+        "definitions": "MY MOTHER IS NOT HERE, I AM LONGING FOR HER/Mama wa i, nambano me hihanwa omutima.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 4
+    },
+    {
+        "word": "LONG",
+        "pronunciation": "-re",
+        "definitions": "LONG TREE/cmuti omure.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 66
+    },
+    {
+        "word": "LONG AGO",
+        "pronunciation": "rukuru",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 77
+    },
+    {
+        "word": "LONG FOR",
+        "pronunciation": "zera(i)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 30
+    },
+    {
+        "word": "LONG SHADOW",
+        "pronunciation": "otjizire (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 73
+    },
+    {
+        "word": "LOOK",
+        "pronunciation": "otjipate (ovi-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 84
+    },
+    {
+        "word": "LOOK",
+        "pronunciation": "tara",
+        "definitions": "- AT/tarera(e). - INTO/natera (e), munina. - FOR/konga(o), kova (o), paha, pamba-ha, pyanga, tjinga(i). - (SEEK)/yevayeva. - AFTER ONESELF/rita-rera(e). - AROUND/yeva(e). - FIXEDLY (BECAUSE OF BAD SIGHT)/nandinda.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 48
+    },
+    {
+        "word": "LOOK PRETTY",
+        "pronunciation": "pwa (pu)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 26
+    },
+    {
+        "word": "LOOP",
+        "pronunciation": "ehuha (oma-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 100
+    },
+    {
+        "word": "LOOSE",
+        "pronunciation": "huhunuka",
+        "definitions": "THE HANDCUFFS ARE LOOSE/Ovipandeke vya huhunuka.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 23
+    },
+    {
+        "word": "LOOSE",
+        "pronunciation": "pandjara",
+        "definitions": "- ONE'S WAY/pu-ka. - TASTE OR INTEREST/kuha (u). I AM GOING HOME HAVING LOST ALL INTEREST IN THE GAME/Me yaruka konganda enyando ra kuhu.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 8
+    },
+    {
+        "word": "LOOSE: BECOME",
+        "pronunciation": "-kutuka",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 65
+    },
+    {
+        "word": "LOOSE: COME",
+        "pronunciation": "-homoka",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 32
+    },
+    {
+        "word": "LORD",
+        "pronunciation": "Muhona, omuhona",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 63
+    },
+    {
+        "word": "LOSS OF LIFE",
+        "pronunciation": "ongokero (020-)",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 88
+    },
+    {
+        "word": "LOST (TRACK)",
+        "pronunciation": "zengaiza",
+        "definitions": "WE LOST THE TRACK/twa zengaiza ondambo.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 46
+    },
+    {
+        "word": "NEXT TO THE FIRE",
+        "pronunciation": "tjakana",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 41
+    },
+    {
+        "word": "ON THE BACK",
+        "pronunciation": "ondonya",
+        "definitions": "",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 67
+    },
+    {
+        "word": "ON THE STOMACH",
+        "pronunciation": "ohomba",
+        "definitions": "HE SLEEPS ON HIS STOMACH/Wa rara ohomba, ondurumika.",
+        "dateAdded": "2024-05-15",
+        "lastModified": "2024-05-15",
+        "likes": 6
     }
 ]
