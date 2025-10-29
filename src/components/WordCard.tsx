@@ -79,7 +79,7 @@ export const WordCard = ({
 
   function getTranslatedWord(pronunciation, definitions){
     let result = pronunciation
-    if(result.length == 0) {
+    if(result.length <= 1) {
       result = definitions[0]
     }
     return result
