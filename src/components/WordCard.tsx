@@ -8,6 +8,7 @@ import { likeWord, unlikeWord } from "@/lib/utils";
 
 interface WordCardProps {
   word: string;
+  $id: string;
   pronunciation: string;
   definitions: string[];
   likes: number;
@@ -16,6 +17,7 @@ interface WordCardProps {
 
 export const WordCard = ({
   word,
+  $id,
   pronunciation,
   definitions,
   likes,
@@ -88,7 +90,7 @@ export const WordCard = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => handleLike(word)}
+                onClick={() => handleLike($id)}
                 className={
                   isLiked
                     ? "text-red-500 hover:text-red-600 p-1"
