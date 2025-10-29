@@ -10,8 +10,8 @@ const client = new Client()
 
 const databases = new Databases(client);
 
-const DATABASE_ID = 'YOUR_APPWRITE_DATABASE_ID'; // Replace with your Appwrite Database ID
-const COLLECTION_ID = 'YOUR_APPWRITE_COLLECTION_ID'; // Replace with your Appwrite Collection ID
+const DATABASE_ID = envConfigs.appwriteDatabaseId; // Replace with your Appwrite Database ID
+const COLLECTION_ID = envConfigs.appwriteCollectionId; // Replace with your Appwrite Collection ID
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
