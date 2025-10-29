@@ -82,7 +82,7 @@ export const WordCard = ({
           <span className="font-bold" itemProp="name">{cleanWord(word)}</span>
           <div className="flex items-center gap-2">
             <span className="text-xs text-muted-foreground" itemProp="alternateName">
-              {pronunciation}
+              
             </span>
             <div className="relative flex items-center">
               <Button
@@ -105,14 +105,9 @@ export const WordCard = ({
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-2 p-4 pt-0">
-        {definitions.map((def, index) => (
-          <div key={index} className="space-y-1">
-            <Badge variant="secondary" className="text-xs">
-             <p>{index + 1}</p>
-            </Badge>
-            <p className="text-sm text-foreground" itemProp="description">{def}</p>
-          </div>
-        ))}
+        <div className="space-y-1">
+          <p className="text-sm text-foreground" itemProp="description">{ pronunciation }</p>
+        </div>
       </CardContent>
     </Card>
   );
