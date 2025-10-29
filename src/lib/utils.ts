@@ -2,7 +2,7 @@ import { envConfigs } from "@/configs/env-configs";
 import { Word } from "@/hooks/useFetchWords";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Client, Databases, Query } from 'appwrite';
+import { Client, Databases } from 'appwrite';
 
 const client = new Client()
   .setEndpoint(envConfigs.appwriteEndpoint)
@@ -10,23 +10,20 @@ const client = new Client()
 
 const databases = new Databases(client);
 
-const DATABASE_ID = envConfigs.appwriteDatabaseId; // Replace with your Appwrite Database ID
-const COLLECTION_ID = envConfigs.appwriteCollectionId; // Replace with your Appwrite Collection ID
+const DATABASE_ID = envConfigs.appwriteDatabaseId;
+const COLLECTION_ID = envConfigs.appwriteCollectionId;
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const likeWord = async (wordId: string) => {
+export const likeWord = async (wordId: string, currentLikes: number) => {
   try {
-    const currentWord = await databases.getDocument(DATABASE_ID, COLLECTION_ID, wordId);
-    const updatedLikes = currentWord.likes + 1;
-
     const updatedWord = await databases.updateDocument(
       DATABASE_ID,
       COLLECTION_ID,
       wordId,
-      { likes: updatedLikes }
+      { likes: currentLikes + 1 }
     );
     return updatedWord;
   } catch (error) {
@@ -35,16 +32,13 @@ export const likeWord = async (wordId: string) => {
   }
 };
 
-export const unlikeWord = async (wordId: string) => {
+export const unlikeWord = async (wordId: string, currentLikes: number) => {
   try {
-    const currentWord = await databases.getDocument(DATABASE_ID, COLLECTION_ID, wordId);
-    const updatedLikes = currentWord.likes - 1;
-
     const updatedWord = await databases.updateDocument(
       DATABASE_ID,
       COLLECTION_ID,
       wordId,
-      { likes: updatedLikes }
+      { likes: currentLikes - 1 }
     );
     return updatedWord;
   } catch (error) {

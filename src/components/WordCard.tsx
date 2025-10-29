@@ -35,7 +35,7 @@ export const WordCard = ({
    */
   const handleLike = (word: string) => {
     if (!isLiked) {
-      likeWord(word)
+      likeWord(word, likeCount)
         .then(() => {
           setIsLiked(!isLiked);
           setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
@@ -53,7 +53,7 @@ export const WordCard = ({
           console.error(error);
         });
     } else {
-      unlikeWord(word)
+      unlikeWord(word, likeCount)
         .then(() => {
           setIsLiked(!isLiked);
           setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
