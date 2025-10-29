@@ -77,6 +77,14 @@ export const WordCard = ({
     return word.replace(/-\s*\d+$/, "").trim();
   }
 
+  function getTranslatedWord(pronunciation, definitions){
+    let result = pronunciation
+    if(result.length == 0) {
+      result = definitions[0]
+    }
+    return result
+  }
+
   return (
     <Card className="dictionary-card w-full h-full" itemScope itemType="https://schema.org/DefinedTerm">
       <CardHeader className="p-4">
@@ -108,7 +116,7 @@ export const WordCard = ({
       </CardHeader>
       <CardContent className="space-y-2 p-4 pt-0">
         <div className="space-y-1">
-          <p className="text-sm text-foreground" itemProp="description">{ pronunciation }</p>
+          <p className="text-sm text-foreground" itemProp="description">{getTranslatedWord(pronunciation, definitions)}</p>
         </div>
       </CardContent>
     </Card>

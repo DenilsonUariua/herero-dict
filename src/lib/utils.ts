@@ -2,13 +2,14 @@ import { envConfigs } from "@/configs/env-configs";
 import { Word } from "@/hooks/useFetchWords";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Client, Databases } from 'appwrite';
+import { Client, Databases, Account } from 'appwrite';
 
 const client = new Client()
   .setEndpoint(envConfigs.appwriteEndpoint)
   .setProject(envConfigs.appwriteProjectId);
 
 const databases = new Databases(client);
+const account = new Account(client);
 
 const DATABASE_ID = envConfigs.appwriteDatabaseId;
 const COLLECTION_ID = envConfigs.appwriteCollectionId;
@@ -19,6 +20,9 @@ export function cn(...inputs: ClassValue[]) {
 
 export const likeWord = async (wordId: string, currentLikes: number) => {
   try {
+    // Verify user is authenticated
+    await account.get();
+
     const updatedWord = await databases.updateDocument(
       DATABASE_ID,
       COLLECTION_ID,

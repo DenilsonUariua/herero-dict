@@ -5,12 +5,12 @@ import { Client, Databases, Query, Models } from 'appwrite';
 export interface Word extends Models.Document {
   word: string;
   pronunciation: string;
-  definitions: string[]; // Will be stored as JSON string
-  dateAdded: string; // DateTime from Appwrite
-  lastModified: string; // DateTime from Appwrite
+  definitions: string[];
+  dateAdded: string;
+  lastModified: string;
   likes: number;
-  originalWord?: string; // Optional - used for bulk imports
-  modified?: boolean; // Optional - indicates if word was renamed
+  originalWord?: string;
+  modified?: boolean;
 }
 
 interface WordsResponse {
@@ -21,6 +21,8 @@ interface WordsResponse {
 interface UseFetchWordsParams {
   initialPage?: number;
   initialLimit?: number;
+  initialSortBy?: 'word' | 'dateAdded' | 'likes';
+  initialSortOrder?: 'asc' | 'desc';
 }
 
 interface CacheEntry {
@@ -32,7 +34,7 @@ interface CacheData {
   [key: string]: CacheEntry;
 }
 
-const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000; // 1 week in milliseconds
+const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000;
 const CACHE_KEY = 'words_cache';
 
 const client = new Client()
@@ -41,22 +43,35 @@ const client = new Client()
 
 const databases = new Databases(client);
 
-const DATABASE_ID = envConfigs.appwriteDatabaseId; // Replace with your Appwrite Database ID
-const COLLECTION_ID = envConfigs.appwriteCollectionId; // Replace with your Appwrite Collection ID
+const DATABASE_ID = envConfigs.appwriteDatabaseId;
+const COLLECTION_ID = envConfigs.appwriteCollectionId;
 
-export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWordsParams = {}) => {
+export const useFetchWords = ({ 
+  initialPage = 1, 
+  initialLimit = 6,
+  initialSortBy = 'word',
+  initialSortOrder = 'asc'
+}: UseFetchWordsParams = {}) => {
   const [words, setWords] = useState<Word[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [limit, setLimit] = useState(initialLimit);
+  const [sortBy, setSortBy] = useState<'word' | 'dateAdded' | 'likes'>(initialSortBy);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>(initialSortOrder);
   const [totalPages, setTotalPages] = useState(0);
   const [totalWords, setTotalWords] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Cache management functions
-  const getCacheKey = (offset: number, itemsPerPage: number, search: string) => {
-    return `${offset}-${itemsPerPage}-${search}`;
+  const getCacheKey = (
+    offset: number, 
+    itemsPerPage: number, 
+    search: string, 
+    sort: string, 
+    order: string
+  ) => {
+    return `${offset}-${itemsPerPage}-${search}-${sort}-${order}`;
   };
 
   const getCache = (): CacheData => {
@@ -72,9 +87,7 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
     try {
       localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
     } catch (error) {
-      // Handle potential QuotaExceededError
       if (error instanceof Error && error.name === 'QuotaExceededError') {
-        // Clear old cache entries
         clearStaleCache();
       }
     }
@@ -85,7 +98,6 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
     const now = Date.now();
     const freshCache: CacheData = {};
 
-    // Keep only fresh entries
     Object.entries(cache).forEach(([key, entry]) => {
       if (now - entry.timestamp < CACHE_DURATION) {
         freshCache[key] = entry;
@@ -95,9 +107,15 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
     setCache(freshCache);
   };
 
-  const getCachedData = (offset: number, itemsPerPage: number, search: string): WordsResponse | null => {
+  const getCachedData = (
+    offset: number, 
+    itemsPerPage: number, 
+    search: string, 
+    sort: string, 
+    order: string
+  ): WordsResponse | null => {
     const cache = getCache();
-    const cacheKey = getCacheKey(offset, itemsPerPage, search);
+    const cacheKey = getCacheKey(offset, itemsPerPage, search, sort, order);
     const cacheEntry = cache[cacheKey];
 
     if (cacheEntry && Date.now() - cacheEntry.timestamp < CACHE_DURATION) {
@@ -107,9 +125,16 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
     return null;
   };
 
-  const setCachedData = (offset: number, itemsPerPage: number, search: string, data: WordsResponse) => {
+  const setCachedData = (
+    offset: number, 
+    itemsPerPage: number, 
+    search: string, 
+    sort: string, 
+    order: string, 
+    data: WordsResponse
+  ) => {
     const cache = getCache();
-    const cacheKey = getCacheKey(offset, itemsPerPage, search);
+    const cacheKey = getCacheKey(offset, itemsPerPage, search, sort, order);
     
     cache[cacheKey] = {
       data,
@@ -119,13 +144,19 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
     setCache(cache);
   };
 
-  const fetchWords = async (page: number = currentPage, itemsPerPage: number = limit, search: string = searchTerm) => {
+  const fetchWords = async (
+    page: number = currentPage, 
+    itemsPerPage: number = limit, 
+    search: string = searchTerm,
+    sort: string = sortBy,
+    order: string = sortOrder
+  ) => {
     setLoading(true);
     setError(null);
     const offset = (page - 1) * itemsPerPage;
 
     // Check cache first
-    const cachedData = getCachedData(offset, itemsPerPage, search);
+    const cachedData = getCachedData(offset, itemsPerPage, search, sort, order);
     if (cachedData) {
       setWords(cachedData.documents);
       setTotalWords(cachedData.total);
@@ -140,25 +171,34 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
         Query.offset(offset),
       ];
 
+      // Add search query - uses word_search fulltext index
       if (search) {
         queries.push(Query.search('word', search));
       }
+
+      // Add sorting based on available indexes
+      // word_sort, date_added_sort, likes_sort
+      if (sort === 'word') {
+        queries.push(order === 'asc' ? Query.orderAsc('word') : Query.orderDesc('word'));
+      } else if (sort === 'dateAdded') {
+        queries.push(order === 'asc' ? Query.orderAsc('dateAdded') : Query.orderDesc('dateAdded'));
+      } else if (sort === 'likes') {
+        queries.push(order === 'asc' ? Query.orderAsc('likes') : Query.orderDesc('likes'));
+      }
       
-      // Type the response as Word documents
       const response = await databases.listDocuments<Word>(
         DATABASE_ID,
         COLLECTION_ID,
         queries
       );
       
-      // Transform response to WordsResponse format
       const wordsResponse: WordsResponse = {
         documents: response.documents as Word[],
         total: response.total
       };
       
       // Cache the response
-      setCachedData(offset, itemsPerPage, search, wordsResponse);
+      setCachedData(offset, itemsPerPage, search, sort, order, wordsResponse);
 
       setWords(wordsResponse.documents);
       setTotalWords(wordsResponse.total);
@@ -173,23 +213,31 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   // Handle search term changes
   const handleSearch = (term: string) => {
     setSearchTerm(term);
-    // Reset to first page when searching
     setCurrentPage(1);
-    fetchWords(1, limit, term);
+    fetchWords(1, limit, term, sortBy, sortOrder);
+  };
+
+  // Handle sort changes
+  const handleSort = (field: 'word' | 'dateAdded' | 'likes', order?: 'asc' | 'desc') => {
+    const newSortOrder = order || (sortBy === field && sortOrder === 'asc' ? 'desc' : 'asc');
+    setSortBy(field);
+    setSortOrder(newSortOrder);
+    setCurrentPage(1);
+    fetchWords(1, limit, searchTerm, field, newSortOrder);
   };
 
   // Function to change items per page
   const changeLimit = (newLimit: number) => {
     setLimit(newLimit);
     setCurrentPage(1);
-    fetchWords(1, newLimit, searchTerm);
+    fetchWords(1, newLimit, searchTerm, sortBy, sortOrder);
   };
 
   // Function to go to next page
   const nextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
-      fetchWords(currentPage + 1, limit, searchTerm);
+      fetchWords(currentPage + 1, limit, searchTerm, sortBy, sortOrder);
     }
   };
 
@@ -197,7 +245,7 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   const prevPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
-      fetchWords(currentPage - 1, limit, searchTerm);
+      fetchWords(currentPage - 1, limit, searchTerm, sortBy, sortOrder);
     }
   };
 
@@ -205,7 +253,7 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
       setCurrentPage(page);
-      fetchWords(page, limit, searchTerm);
+      fetchWords(page, limit, searchTerm, sortBy, sortOrder);
     }
   };
 
@@ -213,10 +261,10 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   const forceRefresh = async () => {
     const cache = getCache();
     const offset = (currentPage - 1) * limit;
-    const cacheKey = getCacheKey(offset, limit, searchTerm);
+    const cacheKey = getCacheKey(offset, limit, searchTerm, sortBy, sortOrder);
     delete cache[cacheKey];
     setCache(cache);
-    await fetchWords(currentPage, limit, searchTerm);
+    await fetchWords(currentPage, limit, searchTerm, sortBy, sortOrder);
   };
 
   // Clean up stale cache entries periodically
@@ -227,18 +275,21 @@ export const useFetchWords = ({ initialPage = 1, initialLimit = 6 }: UseFetchWor
   // Initial fetch
   useEffect(() => {
     fetchWords();
-  }, [currentPage, limit, searchTerm]); // Add dependencies for re-fetching when pagination/search changes
+  }, []);
 
   return {
     words,
     searchTerm,
     currentPage,
     limit,
+    sortBy,
+    sortOrder,
     totalPages,
     totalWords,
     loading,
     error,
     handleSearch,
+    handleSort,
     nextPage,
     prevPage,
     goToPage,
