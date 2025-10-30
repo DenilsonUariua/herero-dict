@@ -274,8 +274,13 @@ export const useFetchWords = ({
 
   // Initial fetch
   useEffect(() => {
-    fetchWords();
-  }, []);
+    if (searchTerm !== "") {
+      fetchWords(currentPage, limit, searchTerm, sortBy, sortOrder);
+    }
+    else {
+      fetchWords(currentPage, limit, searchTerm, sortBy, sortOrder);
+    }
+  }, [searchTerm]); 
 
   return {
     words,
