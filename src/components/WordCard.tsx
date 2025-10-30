@@ -35,9 +35,9 @@ export const WordCard = ({
    * If the word is not currently liked, it will be liked. If the word is currently liked, it will be unliked.
    * @param {string} word The word to like or unlike
    */
-  const handleLike = (word: string) => {
+  const handleLike = (word: string, wordId: string) => {
     if (!isLiked) {
-      likeWord(word, likeCount)
+      likeWord(wordId, likeCount)
         .then(() => {
           setIsLiked(!isLiked);
           setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
@@ -55,7 +55,7 @@ export const WordCard = ({
           console.error(error);
         });
     } else {
-      unlikeWord(word, likeCount)
+      unlikeWord(wordId, likeCount)
         .then(() => {
           setIsLiked(!isLiked);
           setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
@@ -98,7 +98,7 @@ export const WordCard = ({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => handleLike($id)}
+                onClick={() => handleLike(word, $id)}
                 className={
                   isLiked
                     ? "text-red-500 hover:text-red-600 p-1"
