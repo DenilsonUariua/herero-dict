@@ -18,8 +18,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export const likeWord = async (wordId: string, currentLikes: number) => {
   try {
-    // Verify user is authenticated
-  
     const updatedWord = await databases.updateDocument(
       DATABASE_ID,
       COLLECTION_ID,
@@ -47,3 +45,26 @@ export const unlikeWord = async (wordId: string, currentLikes: number) => {
     throw error;
   }
 };
+
+// Subscribe to realtime updates for the entire collection
+export const subscribeToWords = (callback: (payload: any) => void) => {
+  return client.subscribe(
+    `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents`,
+    (response) => {
+      callback(response);
+    }
+  );
+};
+
+// Subscribe to a specific word document
+export const subscribeToWord = (wordId: string, callback: (payload: any) => void) => {
+  return client.subscribe(
+    `databases.${DATABASE_ID}.collections.${COLLECTION_ID}.documents.${wordId}`,
+    (response) => {
+      callback(response);
+    }
+  );
+};
+
+// Export client for use in components if needed
+export { client };

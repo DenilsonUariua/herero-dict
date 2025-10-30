@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
-import { likeWord, unlikeWord } from "@/lib/utils";
+import { likeWord, unlikeWord, subscribeToWord } from "@/lib/utils";
 
 interface WordCardProps {
   word: string;
@@ -28,6 +28,22 @@ export const WordCard = ({
   const { toast } = useToast();
 
   useEffect(() => {
+    // Subscribe to realtime updates for this word
+    const unsubscribe = subscribeToWord($id, (response) => {
+      // Check if it's an update event
+      if (response.events.includes(`databases.*.collections.*.documents.*.update`)) {
+        setLikeCount(response.payload.likes);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => {
+      unsubscribe();
+    };
+  }, [$id]);
+
+  // Update like count when props change
+  useEffect(() => {
     setLikeCount(likes);
   }, [likes]);
 
@@ -35,54 +51,42 @@ export const WordCard = ({
    * If the word is not currently liked, it will be liked. If the word is currently liked, it will be unliked.
    * @param {string} word The word to like or unlike
    */
-  const handleLike = (word: string, wordId: string) => {
-    if (!isLiked) {
-      likeWord(wordId, likeCount)
-        .then(() => {
-          setIsLiked(!isLiked);
-          setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
-          toast({
-            description: !isLiked ? `Liked ${word}` : `Unliked ${word}`,
-          });
-          refresh();
-        })
-        .catch((error) => {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: `Failed to like ${word}`,
-          });
-          console.error(error);
+  const handleLike = async (word: string, wordId: string) => {
+    try {
+      if (!isLiked) {
+        await likeWord(wordId, likeCount);
+        setIsLiked(true);
+        toast({
+          description: `Liked ${word}`,
         });
-    } else {
-      unlikeWord(wordId, likeCount)
-        .then(() => {
-          setIsLiked(!isLiked);
-          setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
-          toast({
-            description: !isLiked ? `Liked ${word}` : `Unliked ${word}`,
-          });
-          refresh();
-        })
-        .catch((error) => {
-          toast({
-            variant: "destructive",
-            title: "Error",
-            description: `Failed to unlike ${word}`,
-          });
+      } else {
+        await unlikeWord(wordId, likeCount);
+        setIsLiked(false);
+        toast({
+          description: `Unliked ${word}`,
         });
+      }
+      // No need to call refresh() - realtime will update automatically
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: `Failed to ${isLiked ? 'unlike' : 'like'} ${word}`,
+      });
+      console.error(error);
     }
   };
-  function cleanWord(word) {
+
+  function cleanWord(word: string) {
     return word.replace(/-\s*\d+$/, "").trim();
   }
 
-  function getTranslatedWord(pronunciation, definitions){
-    let result = pronunciation
-    if(result.length <= 1) {
-      result = definitions[0]
+  function getTranslatedWord(pronunciation: string, definitions: string[]) {
+    let result = pronunciation;
+    if (result.length <= 1) {
+      result = definitions[0];
     }
-    return result
+    return result;
   }
 
   return (
@@ -116,7 +120,9 @@ export const WordCard = ({
       </CardHeader>
       <CardContent className="space-y-2 p-4 pt-0">
         <div className="space-y-1">
-          <p className="text-sm text-foreground" itemProp="description">{getTranslatedWord(pronunciation, definitions)}</p>
+          <p className="text-sm text-foreground" itemProp="description">
+            {getTranslatedWord(pronunciation, definitions)}
+          </p>
         </div>
       </CardContent>
     </Card>
