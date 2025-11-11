@@ -176,8 +176,7 @@ export const useFetchWords = ({
         queries.push(
           Query.or([
             Query.search('word', search),
-            Query.search('pronunciation', search),
-            Query.search('definitions', search)
+            Query.search('pronunciation', search)
           ])
         );
       }
