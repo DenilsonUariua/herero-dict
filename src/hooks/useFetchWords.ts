@@ -166,14 +166,20 @@ export const useFetchWords = ({
     }
 
     try {
-      const queries = [
+     const queries = [
         Query.limit(itemsPerPage),
         Query.offset(offset),
       ];
 
-      // Add search query - uses word_search fulltext index
+      // Add search query - searches across word, pronunciation, and definitions
       if (search) {
-        queries.push(Query.search('word', search));
+        queries.push(
+          Query.or([
+            Query.search('word', search),
+            Query.search('pronunciation', search),
+            Query.search('definitions', search)
+          ])
+        );
       }
 
       // Add sorting based on available indexes
