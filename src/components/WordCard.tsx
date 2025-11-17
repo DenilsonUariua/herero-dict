@@ -83,9 +83,9 @@ export const WordCard = ({
 
   function getTranslatedWord(pronunciation: string, definitions: string[]) {
     let result = pronunciation;
-    // if (result.length <= 1) {
-    //   result = definitions[0];
-    // }
+    if (result.length <= 1) {
+      result = "No translation yet 🤔";
+    }
     return result;
   }
 
@@ -120,8 +120,11 @@ export const WordCard = ({
       </CardHeader>
       <CardContent className="space-y-2 p-4 pt-0">
         <div className="space-y-1">
-          <p className="text-sm text-foreground" itemProp="description">
+          <p className="text-sm text-foreground" itemProp="translation">
             {getTranslatedWord(pronunciation, definitions)}
+          </p>
+           <p className="font-mono italic text-sm text-foreground" itemProp="definition">
+            {definitions[0] || "No Definition yet🤔"}
           </p>
         </div>
       </CardContent>
