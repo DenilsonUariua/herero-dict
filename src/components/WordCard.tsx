@@ -83,9 +83,9 @@ export const WordCard = ({
 
   function getTranslatedWord(pronunciation: string, definitions: string[]) {
     let result = pronunciation;
-    if (result.length <= 1) {
-      result = definitions[0];
-    }
+    // if (result.length <= 1) {
+    //   result = definitions[0];
+    // }
     return result;
   }
 
