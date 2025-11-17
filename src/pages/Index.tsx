@@ -3,6 +3,7 @@ import { WordCard } from "@/components/WordCard";
 import useFetchWords from "@/hooks/useFetchWords";
 import CountUp from 'react-countup';
 import MetaTags from "@/components/MetaTags";
+import MessagePopup from "@/components/MessagePopup";
 
 const Index = () => {
   // const [searchTerm, setSearchTerm] = useState("");
@@ -102,6 +103,7 @@ const Index = () => {
         <CountUp className="text-2xl font-extrabold" start={0} end={totalWords} separator="," duration={5} />
       </div>
       <footer className="flex items-center justify-center fixed bottom-1 font-thin right-4">
+        <MessagePopup />
         <p className="text-xs">Developed by <a className="underline" href="https://github.com/DenilsonUariua" target="_blank">Tjarirove</a></p>
       </footer>
     </main>
