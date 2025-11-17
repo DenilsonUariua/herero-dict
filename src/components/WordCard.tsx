@@ -78,7 +78,7 @@ export const WordCard = ({
   };
 
   function cleanWord(word: string) {
-    return word.replace(/-\s*\d+$/, "").trim();
+    return word.replace(/-\s*\d+$/, "").trim().toLocaleUpperCase();
   }
 
   function getTranslatedWord(pronunciation: string, definitions: string[]) {
