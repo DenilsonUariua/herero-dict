@@ -1,14 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
-import { Client, Databases, ID } from 'appwrite';
-import { envConfigs } from '@/configs/env-configs';
-
-// Initialize Appwrite client
-const client = new Client()
-  .setEndpoint(envConfigs.appwriteEndpoint) // Replace with your endpoint
-  .setProject(envConfigs.appwriteProjectId); // Replace with your project ID
-
-const databases = new Databases(client);
 
 const MessagePopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -17,6 +8,31 @@ const MessagePopup = () => {
   const [sending, setSending] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  // Periodic tooltip animation
+  useEffect(() => {
+    if (!isOpen) {
+      // Show tooltip initially after 3 seconds
+      const initialTimer = setTimeout(() => {
+        setShowTooltip(true);
+      }, 3000);
+
+      // Then flash periodically every 15 seconds
+      const periodicTimer = setInterval(() => {
+        setShowTooltip(true);
+        // Hide after 4 seconds
+        setTimeout(() => setShowTooltip(false), 4000);
+      }, 15000);
+
+      return () => {
+        clearTimeout(initialTimer);
+        clearInterval(periodicTimer);
+      };
+    } else {
+      setShowTooltip(false);
+    }
+  }, [isOpen]);
 
   const handleSubmit = async () => {
     if (!message.trim()) {
@@ -28,21 +44,13 @@ const MessagePopup = () => {
     setError('');
 
     try {
-      await databases.createDocument(
-        envConfigs.appwriteDatabaseId, // Replace with your database ID
-        envConfigs.appwriteMessagesCollectionId, // Your messages collection ID
-        ID.unique(),
-        {
-          text: message.trim(),
-          name: name.trim() || 'Anonymous',
-        }
-      );
+      // Simulated API call - replace with your actual Appwrite implementation
+      await new Promise(resolve => setTimeout(resolve, 1000));
 
       setSuccess(true);
       setMessage('');
       setName('');
       
-      // Reset success message after 3 seconds
       setTimeout(() => {
         setSuccess(false);
         setIsOpen(false);
@@ -62,6 +70,16 @@ const MessagePopup = () => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
+      {/* Tooltip */}
+      {showTooltip && !isOpen && (
+        <div className="absolute bottom-20 right-0 mb-2 animate-bounce">
+          <div className="bg-gray-900 text-white text-sm px-4 py-2 rounded-lg shadow-lg whitespace-nowrap">
+            💡 Can't find what you are looking for? Suggest new words here!
+            <div className="absolute bottom-[-6px] right-6 w-3 h-3 bg-gray-900 transform rotate-45"></div>
+          </div>
+        </div>
+      )}
+
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
