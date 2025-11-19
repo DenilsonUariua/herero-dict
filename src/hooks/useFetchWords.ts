@@ -36,6 +36,7 @@ interface CacheData {
 
 const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000;
 const CACHE_KEY = 'words_cache';
+const FULL_WORDS_CACHE_KEY = 'full_words_cache';
 
 const client = new Client()
   .setEndpoint(envConfigs.appwriteEndpoint)
@@ -46,7 +47,7 @@ const databases = new Databases(client);
 const DATABASE_ID = envConfigs.appwriteDatabaseId;
 const COLLECTION_ID = envConfigs.appwriteCollectionId;
 
-export const useFetchWords = ({ 
+export const useFetchWords = ({
   initialPage = 1, 
   initialLimit = 6,
   initialSortBy = 'word',
@@ -74,18 +75,18 @@ export const useFetchWords = ({
     return `${offset}-${itemsPerPage}-${search}-${sort}-${order}`;
   };
 
-  const getCache = (): CacheData => {
+  const getCache = (key: string = CACHE_KEY): CacheData => {
     try {
-      const cache = localStorage.getItem(CACHE_KEY);
+      const cache = localStorage.getItem(key);
       return cache ? JSON.parse(cache) : {};
     } catch {
       return {};
     }
   };
 
-  const setCache = (cache: CacheData) => {
+  const setCache = (cache: CacheData, key: string = CACHE_KEY) => {
     try {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+      localStorage.setItem(key, JSON.stringify(cache));
     } catch (error) {
       if (error instanceof Error && error.name === 'QuotaExceededError') {
         clearStaleCache();
@@ -105,6 +106,12 @@ export const useFetchWords = ({
     });
 
     setCache(freshCache);
+
+    // Also clear stale full words cache
+    const fullWordsCache = getCache(FULL_WORDS_CACHE_KEY);
+    if (fullWordsCache[FULL_WORDS_CACHE_KEY] && now - fullWordsCache[FULL_WORDS_CACHE_KEY].timestamp >= CACHE_DURATION) {
+      setCache({}, FULL_WORDS_CACHE_KEY);
+    }
   };
 
   const getCachedData = (
@@ -123,6 +130,34 @@ export const useFetchWords = ({
     }
 
     return null;
+  };
+
+  const getCachedDataAllowExpired = (
+    offset: number, 
+    itemsPerPage: number, 
+    search: string, 
+    sort: string, 
+    order: string
+  ): WordsResponse | null => {
+    const cache = getCache();
+    const cacheKey = getCacheKey(offset, itemsPerPage, search, sort, order);
+    const cacheEntry = cache[cacheKey];
+    return cacheEntry ? cacheEntry.data : null;
+  };
+
+  const getCachedFullWords = (): Word[] | null => {
+    const cache = getCache(FULL_WORDS_CACHE_KEY);
+    const cacheEntry = cache[FULL_WORDS_CACHE_KEY];
+    return cacheEntry ? cacheEntry.data.documents : null;
+  };
+
+  const setCachedFullWords = (data: Word[]) => {
+    const cache: CacheData = {};
+    cache[FULL_WORDS_CACHE_KEY] = {
+      data: { documents: data, total: data.length },
+      timestamp: Date.now()
+    };
+    setCache(cache, FULL_WORDS_CACHE_KEY);
   };
 
   const setCachedData = (
@@ -155,7 +190,61 @@ export const useFetchWords = ({
     setError(null);
     const offset = (page - 1) * itemsPerPage;
 
-    // Check cache first
+    // If offline, use any cached data immediately
+    if (!navigator.onLine) {
+      const offlineData = getCachedDataAllowExpired(offset, itemsPerPage, search, sort, order);
+      if (offlineData) {
+        setWords(offlineData.documents);
+        setTotalWords(offlineData.total);
+        setTotalPages(Math.ceil(offlineData.total / itemsPerPage));
+        setLoading(false);
+        return;
+      }
+
+      // Fallback to full cached words if specific query not found offline
+      const fullCachedWords = getCachedFullWords();
+      if (fullCachedWords) {
+        let filteredWords = fullCachedWords;
+
+        if (search) {
+          const lowerCaseSearch = search.toLowerCase();
+          filteredWords = filteredWords.filter(word => 
+            word.word.toLowerCase().includes(lowerCaseSearch) ||
+            word.pronunciation.toLowerCase().includes(lowerCaseSearch) ||
+            word.definitions.some(def => def.toLowerCase().includes(lowerCaseSearch))
+          );
+        }
+
+        // Apply sorting client-side
+        filteredWords.sort((a, b) => {
+          let compare = 0;
+          if (sort === 'word') {
+            compare = a.word.localeCompare(b.word);
+          } else if (sort === 'dateAdded') {
+            compare = new Date(a.dateAdded).getTime() - new Date(b.dateAdded).getTime();
+          } else if (sort === 'likes') {
+            compare = a.likes - b.likes;
+          }
+          return order === 'asc' ? compare : -compare;
+        });
+
+        const paginatedWords = filteredWords.slice(offset, offset + itemsPerPage);
+
+        setWords(paginatedWords);
+        setTotalWords(filteredWords.length);
+        setTotalPages(Math.ceil(filteredWords.length / itemsPerPage));
+        setLoading(false);
+        setError("Offline: Showing filtered cached results.");
+        return;
+      }
+
+      // If no cache, show error but stop spinner
+      setError("You are offline and no cached data is available.");
+      setLoading(false);
+      return;
+    }
+
+    // Check fresh cache first when online
     const cachedData = getCachedData(offset, itemsPerPage, search, sort, order);
     if (cachedData) {
       setWords(cachedData.documents);
@@ -205,11 +294,31 @@ export const useFetchWords = ({
       // Cache the response
       setCachedData(offset, itemsPerPage, search, sort, order, wordsResponse);
 
+      // Also fetch and cache the full word list if not already cached or stale
+      const fullWordsCache = getCache(FULL_WORDS_CACHE_KEY);
+      if (!fullWordsCache[FULL_WORDS_CACHE_KEY] || Date.now() - fullWordsCache[FULL_WORDS_CACHE_KEY].timestamp >= CACHE_DURATION) {
+        const allWordsResponse = await databases.listDocuments<Word>(
+          DATABASE_ID,
+          COLLECTION_ID,
+          [Query.limit(10000)] // Assuming 10000 is a sufficiently large limit to get all words
+        );
+        setCachedFullWords(allWordsResponse.documents as Word[]);
+      }
+
       setWords(wordsResponse.documents);
       setTotalWords(wordsResponse.total);
       setTotalPages(Math.ceil(wordsResponse.total / itemsPerPage));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      // If request fails (e.g., offline during flight), fall back to expired cache
+      const fallbackData = getCachedDataAllowExpired(offset, itemsPerPage, search, sort, order);
+      if (fallbackData) {
+        setWords(fallbackData.documents);
+        setTotalWords(fallbackData.total);
+        setTotalPages(Math.ceil(fallbackData.total / itemsPerPage));
+        setError("Network unavailable — showing cached results.");
+      } else {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      }
     } finally {
       setLoading(false);
     }
@@ -241,24 +350,32 @@ export const useFetchWords = ({
   // Function to go to next page
   const nextPage = () => {
     if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-      fetchWords(currentPage + 1, limit, searchTerm, sortBy, sortOrder);
+      setCurrentPage(prevPage => {
+        const newPage = prevPage + 1;
+        fetchWords(newPage, limit, searchTerm, sortBy, sortOrder);
+        return newPage;
+      });
     }
   };
 
   // Function to go to previous page
   const prevPage = () => {
     if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-      fetchWords(currentPage - 1, limit, searchTerm, sortBy, sortOrder);
+      setCurrentPage(prevPage => {
+        const newPage = prevPage - 1;
+        fetchWords(newPage, limit, searchTerm, sortBy, sortOrder);
+        return newPage;
+      });
     }
   };
 
   // Function to go to specific page
   const goToPage = (page: number) => {
     if (page >= 1 && page <= totalPages) {
-      setCurrentPage(page);
-      fetchWords(page, limit, searchTerm, sortBy, sortOrder);
+      setCurrentPage(() => {
+        fetchWords(page, limit, searchTerm, sortBy, sortOrder);
+        return page;
+      });
     }
   };
 
@@ -269,6 +386,8 @@ export const useFetchWords = ({
     const cacheKey = getCacheKey(offset, limit, searchTerm, sortBy, sortOrder);
     delete cache[cacheKey];
     setCache(cache);
+    // Also clear the full words cache to force a fresh fetch
+    setCache({}, FULL_WORDS_CACHE_KEY);
     await fetchWords(currentPage, limit, searchTerm, sortBy, sortOrder);
   };
 
@@ -279,13 +398,8 @@ export const useFetchWords = ({
 
   // Initial fetch
   useEffect(() => {
-    if (searchTerm !== "") {
-      fetchWords(currentPage, limit, searchTerm, sortBy, sortOrder);
-    }
-    else {
-      fetchWords(currentPage, limit, searchTerm, sortBy, sortOrder);
-    }
-  }, [searchTerm]); 
+    fetchWords(currentPage, limit, searchTerm, sortBy, sortOrder);
+  }, [currentPage, limit, searchTerm, sortBy, sortOrder]); 
 
   return {
     words,
