@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
+import { databases, ID } from '@/lib/appwrite';
+import { envConfigs } from '@/configs/env-configs';
 
 const MessagePopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,8 +46,15 @@ const MessagePopup = () => {
     setError('');
 
     try {
-      // Simulated API call - replace with your actual Appwrite implementation
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await databases.createDocument(
+        envConfigs.appwriteDatabaseId,
+        envConfigs.appwriteMessagesCollectionId,
+        ID.unique(),
+        {
+          name: name,
+          text: message,
+        }
+      );
 
       setSuccess(true);
       setMessage('');
@@ -62,7 +71,7 @@ const MessagePopup = () => {
     }
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && e.ctrlKey) {
       handleSubmit();
     }

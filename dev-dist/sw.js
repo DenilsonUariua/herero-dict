@@ -82,7 +82,7 @@ define(['./workbox-ecdd2ace'], (function (workbox) { 'use strict';
     "revision": "3ca0b8505b4bec776b69afdba2768812"
   }, {
     "url": "index.html",
-    "revision": "0.njss0rhp4d"
+    "revision": "0.i52p4gogt78"
   }], {});
   workbox.cleanupOutdatedCaches();
   workbox.registerRoute(new workbox.NavigationRoute(workbox.createHandlerBoundToURL("index.html"), {
@@ -92,6 +92,7 @@ define(['./workbox-ecdd2ace'], (function (workbox) { 'use strict';
     request
   }) => request.mode === "navigate", new workbox.NetworkFirst({
     "cacheName": "html-cache",
+    "networkTimeoutSeconds": 3,
     plugins: []
   }), 'GET');
   workbox.registerRoute(({
