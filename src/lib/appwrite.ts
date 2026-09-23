@@ -1,4 +1,4 @@
-import { Client, Databases, ID } from 'appwrite';
+import { Client, Account, TablesDB, ID } from 'appwrite';
 import { envConfigs } from '@/configs/env-configs';
 
 const client = new Client();
@@ -6,6 +6,7 @@ client
   .setEndpoint(envConfigs.appwriteEndpoint)
   .setProject(envConfigs.appwriteProjectId);
 
-const databases = new Databases(client);
+const account = new Account(client);
+const tables = new TablesDB(client);
 
-export { client, databases, ID };
+export { client, account, tables, ID };

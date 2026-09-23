@@ -1,11 +1,16 @@
 import { envConfigs } from '@/configs/env-configs';
 import { useState, useEffect } from 'react';
-import { Client, Databases, Query, Models } from 'appwrite';
+import { Query, type Models } from 'appwrite';
+import { tables } from '@/lib/appwrite';
 
-export interface Word extends Models.Document {
+export interface Word extends Models.Row {
   word: string;
+  languageId: string;
   pronunciation: string;
   definitions: string[];
+  example?: string;
+  partOfSpeech?: string;
+  status: 'approved' | 'pending' | 'archived';
   dateAdded: string;
   lastModified: string;
   likes: number;
@@ -37,12 +42,6 @@ interface CacheData {
 const CACHE_DURATION = 7 * 24 * 60 * 60 * 1000;
 const CACHE_KEY = 'words_cache';
 const FULL_WORDS_CACHE_KEY = 'full_words_cache';
-
-const client = new Client()
-  .setEndpoint(envConfigs.appwriteEndpoint)
-  .setProject(envConfigs.appwriteProjectId);
-
-const databases = new Databases(client);
 
 const DATABASE_ID = envConfigs.appwriteDatabaseId;
 const COLLECTION_ID = envConfigs.appwriteCollectionId;
@@ -258,6 +257,7 @@ export const useFetchWords = ({
      const queries = [
         Query.limit(itemsPerPage),
         Query.offset(offset),
+        Query.equal('status', 'approved'),
       ];
 
       // Add search query - searches across word, pronunciation, and definitions
@@ -280,14 +280,14 @@ export const useFetchWords = ({
         queries.push(order === 'asc' ? Query.orderAsc('likes') : Query.orderDesc('likes'));
       }
       
-      const response = await databases.listDocuments<Word>(
+      const response = await tables.listRows<Word>(
         DATABASE_ID,
         COLLECTION_ID,
         queries
       );
-      
+
       const wordsResponse: WordsResponse = {
-        documents: response.documents as Word[],
+        documents: response.rows as Word[],
         total: response.total
       };
       
@@ -297,12 +297,12 @@ export const useFetchWords = ({
       // Also fetch and cache the full word list if not already cached or stale
       const fullWordsCache = getCache(FULL_WORDS_CACHE_KEY);
       if (!fullWordsCache[FULL_WORDS_CACHE_KEY] || Date.now() - fullWordsCache[FULL_WORDS_CACHE_KEY].timestamp >= CACHE_DURATION) {
-        const allWordsResponse = await databases.listDocuments<Word>(
+        const allWordsResponse = await tables.listRows<Word>(
           DATABASE_ID,
           COLLECTION_ID,
-          [Query.limit(10000)] // Assuming 10000 is a sufficiently large limit to get all words
+          [Query.limit(10000), Query.equal('status', 'approved')] // Assuming 10000 is a sufficiently large limit to get all words
         );
-        setCachedFullWords(allWordsResponse.documents as Word[]);
+        setCachedFullWords(allWordsResponse.rows as Word[]);
       }
 
       setWords(wordsResponse.documents);
