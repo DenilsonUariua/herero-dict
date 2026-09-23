@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, X, Send } from 'lucide-react';
-import { databases, ID } from '@/lib/appwrite';
+import { tables, ID } from '@/lib/appwrite';
 import { envConfigs } from '@/configs/env-configs';
 
 const MessagePopup = () => {
@@ -46,9 +46,9 @@ const MessagePopup = () => {
     setError('');
 
     try {
-      await databases.createDocument(
+      await tables.createRow(
         envConfigs.appwriteDatabaseId,
-        envConfigs.appwriteMessagesCollectionId,
+        envConfigs.appwriteMessagesTableId,
         ID.unique(),
         {
           name: name,
