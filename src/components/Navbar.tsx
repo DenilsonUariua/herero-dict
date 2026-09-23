@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { BookOpenText, LogOut, User, Lightbulb, Loader2 } from 'lucide-react';
+import { BookOpenText, LogOut, User, Lightbulb, Loader2, Shield } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
+import { isAdmin } from '@/lib/admin';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import {
@@ -61,6 +62,11 @@ export function Navbar() {
                   {profile?.displayName || user.name || user.email}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                {isAdmin(user) && (
+                  <DropdownMenuItem onClick={() => navigate('/admin')} className="gap-2">
+                    <Shield className="h-4 w-4" /> Admin panel
+                  </DropdownMenuItem>
+                )}
                 <DropdownMenuItem onClick={() => navigate('/profile')} className="gap-2">
                   <User className="h-4 w-4" /> My profile
                 </DropdownMenuItem>

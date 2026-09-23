@@ -12,4 +12,6 @@ export const envConfigs = {
   appwriteLikesTableId: import.meta.env.VITE_APPWRITE_LIKES_TABLE_ID ?? 'word_likes',
   appwriteProfilesTableId: import.meta.env.VITE_APPWRITE_PROFILES_TABLE_ID ?? 'profiles',
   appwriteWotdTableId: import.meta.env.VITE_APPWRITE_WOTD_TABLE_ID ?? 'word_of_the_day',
+  appwriteDraftsTableId: import.meta.env.VITE_APPWRITE_DRAFTS_TABLE_ID ?? 'word_drafts',
+  appwriteSettingsTableId: import.meta.env.VITE_APPWRITE_SETTINGS_TABLE_ID ?? 'app_settings',
 } as const;
