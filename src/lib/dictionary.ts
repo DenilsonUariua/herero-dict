@@ -26,6 +26,7 @@ export interface WordSuggestion extends Models.Row {
   status: 'pending' | 'approved' | 'rejected';
   reviewNote?: string;
   reviewedAt?: string;
+  createdWordId?: string;
 }
 
 export interface WordCorrection extends Models.Row {
