@@ -7,6 +7,18 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 3400,
+    proxy: {
+      // Local translation proxy (scripts/rag-server.mjs). In production this
+      // path is served by api/translate.mjs on the same origin.
+      "/api": {
+        target: "http://localhost:3401",
+        changeOrigin: true,
+        configure: (proxy) => {
+          // the proxy is optional: silence connection noise when it is not running
+          proxy.on("error", () => {});
+        },
+      },
+    },
   },
   plugins: [
     react(),
@@ -46,7 +58,8 @@ export default defineConfig(({ mode }) => ({
         ],
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,svg,png,ico,webp}"],
+        // json: lexicon.json (dictionary data) + manifest must survive offline
+        globPatterns: ["**/*.{js,css,html,svg,png,ico,webp,json}"],
         // Ensure SPA navigations always fall back to index.html when offline
         navigateFallback: "index.html",
         runtimeCaching: [

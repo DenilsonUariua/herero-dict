@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "otjiherero-dictionary": {
+      "command": "node",
+      "args": ["dist-mcp/mcp-server.mjs"],
+      "cwd": ".",
+      "env": {
+        "LLM_API_KEY": "",
+        "LLM_BASE_URL": "https://api.openai.com/v1",
+        "LLM_MODEL": "gpt-4o-mini"
+      }
+    }
+  }
+}

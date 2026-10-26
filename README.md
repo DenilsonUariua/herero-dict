@@ -1,107 +1,265 @@
-# Herero Dictionary
+# Otjiherero Dictionary
 
-A simple Herero dictionary application that enables users to:
-- Search for Herero words.
-- Like their favorite Herero words.
-- Request corrections or suggest changes for specific words.
+A community dictionary for Otjiherero (Herero) with bilingual lookup and
+dictionary-grounded sentence translation.
+
+- **Search & browse** English headwords with their Otjiherero equivalents.
+- **Translate** in both directions — English ⇄ Otjiherero — by word or by sentence.
+- **Like** words, **suggest** new ones, and **request corrections**.
+- Works **offline** once loaded (PWA + local lexicon).
 
 ---
 
 ## Features
 
-### 1. **Search for Words**
-Users can easily search for Herero words and find their meanings or translations.
+### 1. Dictionary lookup (both directions)
+Search English to find the Otjiherero term, or search Otjiherero to find the
+English meaning. Handles noun-class prefixes (`otjivike` / `ovivike`), stemming
+(`working` → `WORK`) and near-miss spellings.
 
-### 2. **Like Words**
-Mark words as favorites by liking them. This feature allows users to save the words they find interesting or useful.
+### 2. Sentence translation (retrieval-augmented)
+Give it an English sentence and it returns an Otjiherero sentence, a
+word-by-word gloss, grammar notes, a confidence score, and **the exact
+dictionary entries it was grounded in**. Words the dictionary does not cover are
+called out explicitly instead of being silently guessed.
 
-### 3. **Request Corrections**
-Users can request corrections or provide suggestions for words that may need updates or changes.
-
----
-
-## Installation
-
-### Prerequisites
-Ensure you have the following installed:
-- [Node.js](https://nodejs.org/) (v14 or higher)
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-
-### Steps
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/herero-dictionary.git
-   ```
-
-2. Navigate to the project directory:
-   ```bash
-   cd herero-dictionary
-   ```
-
-3. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
-
-4. Start the application:
-   ```bash
-   npm start
-   # or
-   yarn start
-   ```
-
-5. Open your browser and navigate to:
-   ```
-   http://localhost:3000
-   ```
+### 3. Likes, suggestions, corrections
+Mark favourites, submit missing words, and flag mistakes for review. Admins
+review everything from `/admin`.
 
 ---
 
-## Usage
+## How the translation works
 
-### Searching for Words
-1. Enter a Herero word in the search bar.
-2. View the results, including the word's meaning or translation.
+```
+English sentence
+      │
+      ▼
+┌─────────────────┐   BM25 + morphology + typo tolerance over the lexicon
+│   Retriever     │   plus live full-text search on the Appwrite `words` table
+└─────────────────┘
+      │  top ~10 entries (headword, Otjiherero terms, noun class, examples)
+      ▼
+┌─────────────────┐   grammar reference + few-shot pairs from the dictionary
+│ Prompt builder  │   + retrieved entries + "flag anything uncovered" rules
+└─────────────────┘
+      │
+      ▼
+┌─────────────────┐   OpenAI-compatible chat completion (server proxy or BYOK)
+│   LLM           │   returns strict JSON
+└─────────────────┘
+      │
+      ▼
+  validated result → cached in localStorage → rendered with sources
+```
 
-### Liking Words
-- Click the "like" button next to a word to save it as a favorite.
+Why lexical retrieval rather than a vector index: the corpus is small and the
+query is a full sentence, so what matters is recalling *specific* content words,
+not topical similarity. BM25 with Herero-aware stemming beats embeddings here,
+costs nothing per query, and works offline. The retriever is a pure function
+(`src/lib/rag/retriever.ts`), so swapping in a dense index later is a contained
+change.
 
-### Requesting Corrections
-1. Select a word.
-2. Use the "Request Correction" feature to provide feedback or suggest a change.
+### Where the code lives
+
+| Path | Purpose |
+| --- | --- |
+| `scripts/lib/lexicon-parse.mjs` | Parses the raw scraped dictionary rows into structured entries |
+| `scripts/build-lexicon.mjs` | Generates `public/lexicon.json` |
+| `src/lib/rag/retriever.ts` | Hybrid retrieval + offline word lookup |
+| `src/lib/rag/prompt.ts` | Otjiherero grammar reference + prompt assembly |
+| `src/lib/rag/provider.ts` | Model access (server proxy, then BYOK) |
+| `src/lib/rag/live.ts` | Folds newly approved Appwrite words into retrieval |
+| `src/lib/rag/translate.ts` | Orchestration, validation, caching |
+| `src/pages/Translate.tsx` | The `/translate` UI |
+| `src/mcp/server.ts` | MCP server exposing the dictionary as AI tools |
+| `api/translate.mjs` | Serverless proxy that keeps the API key server-side |
+| `scripts/rag-server.mjs` | Same proxy, running locally for `npm run dev:full` |
+
+---
+
+## Setup
+
+### 1. Install
+
+```bash
+npm install
+```
+
+### 2. Configure environment
+
+```bash
+cp .env.example .env
+```
+
+Fill in your Appwrite project (`VITE_APPWRITE_ENDPOINT`,
+`VITE_APPWRITE_PROJECT_ID`, `VITE_APPWRITE_DATABASE_ID`), then create the schema:
+
+```bash
+npm run setup:appwrite
+```
+
+### 3. Enable sentence translation
+
+Word lookup needs no configuration. Sentence translation needs a model —
+pick **one** of:
+
+**A. Server-side key (recommended for a public site).** Add to `.env`:
+
+```bash
+# Gemini (key from https://aistudio.google.com/apikey)
+LLM_API_KEY=AIza...
+LLM_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai
+LLM_MODEL=gemini-2.5-flash
+
+# or any other OpenAI-compatible provider:
+# LLM_BASE_URL=https://api.openai.com/v1        LLM_MODEL=gpt-4o-mini
+# LLM_BASE_URL=https://openrouter.ai/api/v1     LLM_MODEL=openai/gpt-4o-mini
+# LLM_BASE_URL=https://api.groq.com/openai/v1   LLM_MODEL=llama-3.3-70b-versatile
+# LLM_BASE_URL=http://localhost:11434/v1        LLM_MODEL=llama3.1  (Ollama, no key)
+```
+
+Then run the proxy alongside Vite:
+
+```bash
+npm run dev:full
+```
+
+In production, `api/translate.mjs` is picked up automatically as a serverless
+function (Vercel needs no extra config). Set the same variables in your host's
+dashboard — **never** prefix them with `VITE_`, or the key would be bundled into
+the browser build.
+
+**B. Per-visitor key (no backend).** Leave `LLM_API_KEY` empty. Visitors open
+the gear icon on `/translate` and paste their own key; it is stored only in
+their browser and sent straight to the provider.
+
+### 4. Run
+
+```bash
+npm run dev        # app only — word lookup works, sentences need a key
+npm run dev:full   # app + local translation proxy
+```
+
+Open <http://localhost:3400>.
+
+---
+
+## Scripts
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Vite dev server on :3400 |
+| `npm run dev:full` | Vite + local translation proxy on :3401 |
+| `npm run build` | Regenerates the lexicon, then builds for production |
+| `npm run build:lexicon` | Rebuilds `public/lexicon.json` from `words.json` |
+| `npm run build:lexicon -- --report` | Same, plus a parse-quality report |
+| `npm run test:rag` | Retrieval quality harness (no API key needed) |
+| `npm run test:mcp` | MCP server protocol + tools smoke test |
+| `npm run mcp:build` | Bundle the MCP server to `dist-mcp/mcp-server.mjs` |
+| `npm run mcp` | Run the MCP server on stdio |
+| `npm run typecheck` | TypeScript check |
+| `npm run setup:appwrite` | Creates/updates Appwrite tables and seeds data |
+
+### Updating the dictionary
+
+`public/lexicon.json` is a build-time snapshot committed to the repo, so the app
+works on a fresh clone without the (git-ignored) `words.json`. After editing the
+dictionary source:
+
+```bash
+npm run build:lexicon -- --report
+```
+
+The report lists rows whose source text is damaged (OCR artefacts such as
+`o20-1`, `WO0`) — those are the entries worth fixing by hand. Words added later
+through the admin panel are picked up at query time via live search, so a
+rebuild is only needed for bulk imports.
+
+---
+
+## MCP server (use the dictionary from any AI assistant)
+
+The repo ships an MCP (Model Context Protocol) server, so tools like Claude
+Desktop, Cursor, or WorkBuddy can query the dictionary directly instead of
+scraping the website.
+
+```bash
+npm run mcp:build     # bundle src/mcp/server.ts -> dist-mcp/mcp-server.mjs
+npm run test:mcp      # protocol + tools smoke test (no key needed)
+npm run mcp           # run the server on stdio
+```
+
+**Tools**
+
+| Tool | Needs key | What it does |
+| --- | --- | --- |
+| `lookup_word` | no | Bidirectional lookup with noun classes and examples |
+| `search_dictionary` | no | Retrieve the entries the translator is grounded in |
+| `translate_sentence` | yes | Full RAG translation with gloss, notes, confidence |
+| `get_lexicon_stats` | no | Corpus size, data-quality flags |
+
+It also exposes the full lexicon as the resource `dictionary://lexicon`.
+
+**Register it in an MCP client** (Claude Desktop → Settings → Developer →
+Edit Config, or the equivalent in your client; a ready-made `.mcp.json` ships
+with the repo):
+
+```json
+{
+  "mcpServers": {
+    "otjiherero-dictionary": {
+      "command": "node",
+      "args": ["C:/absolute/path/to/herero-dict/dist-mcp/mcp-server.mjs"],
+      "env": {
+        "LLM_API_KEY": "AIza...",
+        "LLM_BASE_URL": "https://generativelanguage.googleapis.com/v1beta/openai",
+        "LLM_MODEL": "gemini-2.5-flash"
+      }
+    }
+  }
+}
+```
+
+`env` is optional — without `LLM_API_KEY` the lookup and search tools still
+work, and `translate_sentence` explains how to enable itself.
+
+**AI-friendly site data:** `public/llms.txt` describes the site for AI
+crawlers/agents and documents the shape of `/lexicon.json`, and
+`lexicon.json` is now included in the PWA precache so offline lookup keeps
+working.
+
+---
+
+## Limitations (worth knowing)
+
+- The bundled dictionary is a partial extract (W-words only, ~116 entries). The
+  translator is only as good as the lexicon it retrieves from — coverage will
+  improve sharply as the dictionary grows.
+- Otjiherero is low-resource, so the model has almost no prior knowledge of it.
+  Grammar guidance in the prompt is derived from constructions attested in this
+  dictionary; treat low-confidence output as a draft for a speaker to check.
+- Confidence scores are the model's self-assessment, not a calibrated metric.
+- Sentence translation requires network access and a model; word lookup does not.
 
 ---
 
 ## Contributing
 
-We welcome contributions! Follow these steps to contribute:
+1. Fork the repo and create a branch: `git checkout -b feature-name`
+2. Make your changes and commit them.
+3. Open a Pull Request.
 
-1. Fork the repository.
-2. Create a new branch:
-   ```bash
-   git checkout -b feature-name
-   ```
-3. Make your changes and commit them:
-   ```bash
-   git commit -m "Description of changes"
-   ```
-4. Push your changes to your fork:
-   ```bash
-   git push origin feature-name
-   ```
-5. Open a Pull Request.
+Corrections from native speakers are especially valuable — both for dictionary
+entries and for the grammar reference in `src/lib/rag/prompt.ts`.
 
 ---
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
-
----
+[MIT](LICENSE)
 
 ## Acknowledgments
-- Inspired by the beauty of the Herero language and culture.
-- Thanks to all contributors and users for their support!
+
+- Inspired by the beauty of the Otjiherero language and culture.
+- Thanks to all contributors and users for their support.

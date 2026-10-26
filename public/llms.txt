@@ -1,0 +1,46 @@
+# Otjiherero Dictionary
+
+> A community dictionary for Otjiherero (Herero, Bantu language of Namibia and
+> Angola) with bilingual lookup and dictionary-grounded sentence translation.
+
+The site is a PWA. Its structured dictionary data is available for reuse:
+
+- Machine-readable lexicon: `/lexicon.json` — all English headwords with
+  Otjiherero terms, noun-class (singular/plural) prefixes, and example
+  sentence pairs. The shape is documented below.
+- Sitemap: `/sitemap.xml`
+- Human pages: `/` (search + browse), `/translate` (bidirectional lookup and
+  RAG sentence translation)
+
+## Lexicon JSON shape
+
+```json
+{
+  "entries": [{
+    "id": "w001",
+    "en": "WOMAN",              // headword as printed
+    "lemma": "WOMAN",           // headword without homograph suffix
+    "terms": [{ "hz": "omukazendu", "classPrefix": "ova" }],
+    "subEntries": [{ "en": "OLD", "hz": "omukurukaze" }],
+    "examples": [{ "en": "THE CHILD IS WET", "hz": "Omuatje wa ningena" }]
+  }],
+  "hzIndex": [{ "hz": "omukazendu", "en": "WOMAN", "entryId": "w001" }]
+}
+```
+
+`classPrefix` is the plural noun-class prefix (`ova-`, `ovi-`, `ozo-`, …);
+Otjiherero nouns agree with their class on verbs and adjectives.
+
+## MCP server
+
+An MCP (Model Context Protocol) server ships with the repo so AI assistants
+can query the dictionary as tools:
+
+- `lookup_word` — bidirectional word lookup (offline)
+- `search_dictionary` — retrieve the entries the translator is grounded in
+- `translate_sentence` — full RAG translation (needs `LLM_API_KEY`)
+- `get_lexicon_stats` — corpus size and data-quality flags
+- resource `dictionary://lexicon` — the full lexicon JSON
+
+Setup: build with `npm run mcp:build`, then register
+`node dist-mcp/mcp-server.mjs` in your MCP client (see `.mcp.json`).

@@ -1,5 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { BookOpenText, LogOut, User, Lightbulb, Loader2, Shield } from 'lucide-react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { BookOpenText, LogOut, User, Lightbulb, Loader2, Shield, Languages } from 'lucide-react';
 import { useAuth } from '@/lib/auth';
 import { isAdmin } from '@/lib/admin';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,7 @@ import { useState } from 'react';
 export function Navbar() {
   const { user, profile, loading, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [suggestOpen, setSuggestOpen] = useState(false);
 
   const initials = (profile?.displayName || user?.name || user?.email || '?')
@@ -36,6 +37,18 @@ export function Navbar() {
         </Link>
 
         <div className="flex items-center gap-2">
+          <Button
+            variant={location.pathname === '/translate' ? 'secondary' : 'ghost'}
+            size="sm"
+            className="gap-1.5"
+            asChild
+          >
+            <Link to="/translate">
+              <Languages className="h-4 w-4" />
+              <span className="hidden sm:inline">Translate</span>
+            </Link>
+          </Button>
+
           <Button
             variant="outline"
             size="sm"
