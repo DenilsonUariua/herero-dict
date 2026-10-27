@@ -32,3 +32,9 @@ dist-mcp
 # PDF extraction working files
 .extract
 *.pdf
+
+# Vite writes these next to vite.config.ts when it reloads the config
+vite.config.ts.timestamp-*.mjs
+
+# Local review screenshots
+.workbuddy-ai/screenshots
