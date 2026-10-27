@@ -150,11 +150,21 @@ function parseTerms(pronunciation) {
  * next chunk starts a new English label.
  */
 function splitSegments(definitions) {
-  return String(definitions ?? '')
-    .replace(/\s+/g, ' ')
-    .split(/(?<=[.:])\s+(?=[A-Z(–—-])/)
-    .map((s) => s.trim())
-    .filter(Boolean);
+  // `definitions` is a string array in the database. Each element is a separate
+  // definition, so split them independently — joining first would glue a
+  // description onto the next "EN/HZ" pair (Array.toString uses commas).
+  const parts = Array.isArray(definitions) ? definitions : [definitions];
+  const segments = [];
+  for (const part of parts) {
+    segments.push(
+      ...String(part ?? '')
+        .replace(/\s+/g, ' ')
+        .split(/(?<=[.:])\s+(?=[A-Z(–—-])/)
+        .map((s) => s.trim())
+        .filter(Boolean),
+    );
+  }
+  return segments;
 }
 
 /**
@@ -175,7 +185,10 @@ function parseDefinitions(definitions) {
     // No slash: a loose Herero fragment ("omuhongo-none.")
     if (slash === -1) {
       const frag = cleanFragment(segment);
-      if (frag && looksHerero(frag)) {
+      // A labelled list ("Surnames and homesteads (ozonganda): Kahere, ...")
+      // or a long sentence is prose, not a lexical term.
+      const isProse = frag.includes(':') || frag.split(/\s+/).length > 8;
+      if (frag && !isProse && looksHerero(frag)) {
         terms.push({ hz: frag, classPrefix: null, source: 'definitions' });
       }
       continue;
@@ -309,6 +322,18 @@ export function parseEntry(row, id) {
 
   const fromDefinitions = parseDefinitions(row?.definitions);
   fromDefinitions.flags.forEach((f) => flags.add(f));
+
+  // Clan / surname rows carry descriptive prose, not lexical glosses: their
+  // only Herero term is the one in the pronunciation field. Cultural *terms*
+  // (oruzo, omiṱanḓu, …) are tagged 'clan' too but do carry example pairs.
+  const tags = Array.isArray(row?.tags) ? row.tags : [];
+  const isProseRow =
+    tags.includes('surname') || (tags.includes('clan') && !tags.includes('cultural-term'));
+  if (isProseRow) {
+    fromDefinitions.terms.length = 0;
+    fromDefinitions.subEntries.length = 0;
+    fromDefinitions.examples.length = 0;
+  }
 
   if (/[\d]/.test(String(row?.sourceWord ?? en))) flags.add('ocr-headword');
   if (!fromPronunciation.terms.length && !fromDefinitions.terms.length && !fromDefinitions.subEntries.length) {

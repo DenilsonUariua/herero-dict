@@ -20,7 +20,8 @@
     "preview": "vite preview",
     "setup:appwrite": "node scripts/setup-appwrite.mjs",
     "import:extract": "node scripts/import-extracted.mjs",
-    "import:extract:dry": "node scripts/import-extracted.mjs --dry-run"
+    "import:extract:dry": "node scripts/import-extracted.mjs --dry-run",
+    "extract:otuzo": "node scripts/extract-otuzo.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

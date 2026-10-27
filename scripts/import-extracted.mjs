@@ -64,18 +64,21 @@ function readPhrases() {
 
 function readDictionaryPages() {
   if (!fs.existsSync(EXTRACT)) return [];
+  // dict-p<page>.jsonl  = scanned 1983 dictionary pages
+  // otuzo-*.jsonl       = clan data from Hangara (2017)
   const files = fs
     .readdirSync(EXTRACT)
-    .filter((f) => /^dict-p\d+\.jsonl$/.test(f))
+    .filter((f) => /^dict-p\d+\.jsonl$/.test(f) || /^otuzo-[a-z]+\.jsonl$/.test(f))
     .sort();
 
   const rows = [];
   for (const file of files) {
+    const origin = file.startsWith('otuzo-') ? 'hangara-2017' : 'viljoen-1983';
     const lines = fs.readFileSync(path.join(EXTRACT, file), 'utf8').split(/\r?\n/);
     for (const line of lines) {
       if (!line.trim()) continue;
       try {
-        rows.push({ ...JSON.parse(line), origin: 'viljoen-1983' });
+        rows.push({ ...JSON.parse(line), origin });
       } catch {
         console.warn(`  ! skipped malformed line in ${file}`);
       }
@@ -170,21 +173,48 @@ for (const row of normalised) {
 const candidates = [...byWord.values()];
 console.log(`  unique      ${candidates.length} after de-duplicating headwords`);
 
-// fetch what is already live
-const existing = new Set();
+// fetch what is already live (keep id + definitions so we can merge into it)
+const existing = new Map(); // WORD -> { id, definitions:Set, tags:Set }
 let offset = 0;
 for (;;) {
   const res = await tables.listRows(DATABASE_ID, TABLE_ID, [Query.limit(100), Query.offset(offset)]);
-  res.rows.forEach((r) => existing.add(String(r.word ?? '').toUpperCase()));
+  for (const r of res.rows) {
+    existing.set(String(r.word ?? '').toUpperCase(), {
+      id: r.$id,
+      definitions: new Set(Array.isArray(r.definitions) ? r.definitions : []),
+      tags: new Set(Array.isArray(r.tags) ? r.tags : []),
+    });
+  }
   if (res.rows.length < 100) break;
   offset += 100;
 }
 console.log(`  already in database  ${existing.size}`);
 
-const fresh = candidates.filter((row) => !existing.has(row.word.toUpperCase()));
-console.log(`  new         ${fresh.length}\n`);
+const MERGE = process.argv.includes('--merge');
 
-if (!fresh.length) {
+// rows whose headword exists but which carry definitions we do not have yet
+const toMerge = [];
+if (MERGE) {
+  for (const row of candidates) {
+    const live = existing.get(row.word.toUpperCase());
+    if (!live) continue;
+    const newDefs = (row.definitions ?? []).filter((d) => !live.definitions.has(d));
+    const newTags = (row.tags ?? []).filter((t) => !live.tags.has(t));
+    if (!newDefs.length && !newTags.length) continue;
+    toMerge.push({
+      id: live.id,
+      word: row.word,
+      definitions: [...live.definitions, ...newDefs],
+      tags: [...live.tags, ...newTags],
+    });
+  }
+}
+
+const fresh = candidates.filter((row) => !existing.has(row.word.toUpperCase()));
+console.log(`  new         ${fresh.length}`);
+console.log(`  to merge    ${toMerge.length}\n`);
+
+if (!fresh.length && !toMerge.length) {
   console.log('Nothing to import.\n');
   process.exit(0);
 }
@@ -199,9 +229,25 @@ if (needsReview.length) {
 if (DRY_RUN) {
   console.log('Dry run — sample rows:');
   for (const row of fresh.slice(0, 5)) console.log(' ', JSON.stringify(row));
+  if (toMerge.length) {
+    console.log(' Would merge into existing:');
+    for (const row of toMerge.slice(0, 5)) console.log(`   ${row.word}: +${row.definitions.length}`);
+  }
   console.log('');
   process.exit(0);
 }
+
+// merge new definitions into rows that already exist
+let merged = 0;
+for (const row of toMerge) {
+  await tables.updateRow(DATABASE_ID, TABLE_ID, row.id, {
+    definitions: row.definitions,
+    tags: row.tags,
+  });
+  merged += 1;
+  process.stdout.write(`\r  merged      ${merged}/${toMerge.length}`);
+}
+if (toMerge.length) console.log('\n');
 
 // push to Appwrite in chunks
 let created = 0;
@@ -217,6 +263,20 @@ console.log('\n');
 const wordsPath = path.join(projectRoot, 'words.json');
 const words = fs.existsSync(wordsPath) ? JSON.parse(fs.readFileSync(wordsPath, 'utf8')) : [];
 const known = new Set(words.map((w) => String(w.word ?? '').toUpperCase()));
+
+// merged definitions must land in words.json too, or the lexicon stays stale
+let wordsUpdated = 0;
+if (toMerge.length) {
+  const byWord = new Map(words.map((w) => [String(w.word ?? '').toUpperCase(), w]));
+  for (const row of toMerge) {
+    const target = byWord.get(row.word.toUpperCase());
+    if (!target) continue;
+    target.definitions = row.definitions;
+    target.tags = row.tags;
+    wordsUpdated += 1;
+  }
+}
+
 let appended = 0;
 for (const row of fresh) {
   if (known.has(row.word.toUpperCase())) continue;
@@ -238,5 +298,6 @@ for (const row of fresh) {
 fs.writeFileSync(wordsPath, `${JSON.stringify(words, null, 4)}\n`, 'utf8');
 
 console.log(`  created     ${created} rows in "${TABLE_ID}"`);
+if (merged) console.log(`  merged      ${merged} existing rows (${wordsUpdated} synced to words.json)`);
 console.log(`  words.json  ${appended} appended (now ${words.length} total)`);
 console.log('\nNext: npm run build:lexicon  (refresh the RAG lexicon)\n');
