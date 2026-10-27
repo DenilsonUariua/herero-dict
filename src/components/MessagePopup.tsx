@@ -1,7 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { MessageCircle, X, Send } from 'lucide-react';
+import { MessageCircle, Send } from 'lucide-react';
 import { tables, ID } from '@/lib/appwrite';
 import { envConfigs } from '@/configs/env-configs';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
+
+const HINT_KEY = 'herero_message_hint_shown';
 
 const MessagePopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,31 +24,31 @@ const MessagePopup = () => {
   const [sending, setSending] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [showTooltip, setShowTooltip] = useState(false);
+  const [showHint, setShowHint] = useState(false);
 
-  // Periodic tooltip animation
+  // A one-off nudge is enough — a bubble that keeps bouncing back over the
+  // cards is the kind of thing people install ad blockers for.
   useEffect(() => {
-    if (!isOpen) {
-      // Show tooltip initially after 3 seconds
-      const initialTimer = setTimeout(() => {
-        setShowTooltip(true);
-      }, 3000);
-
-      // Then flash periodically every 15 seconds
-      const periodicTimer = setInterval(() => {
-        setShowTooltip(true);
-        // Hide after 4 seconds
-        setTimeout(() => setShowTooltip(false), 4000);
-      }, 15000);
-
-      return () => {
-        clearTimeout(initialTimer);
-        clearInterval(periodicTimer);
-      };
-    } else {
-      setShowTooltip(false);
+    let shown = false;
+    try {
+      shown = sessionStorage.getItem(HINT_KEY) === '1';
+    } catch {
+      shown = true;
     }
-  }, [isOpen]);
+    if (shown) return;
+
+    const timer = setTimeout(() => {
+      setShowHint(true);
+      try {
+        sessionStorage.setItem(HINT_KEY, '1');
+      } catch {
+        /* private mode */
+      }
+      setTimeout(() => setShowHint(false), 6000);
+    }, 4000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSubmit = async () => {
     if (!message.trim()) {
@@ -46,24 +60,18 @@ const MessagePopup = () => {
     setError('');
 
     try {
-      await tables.createRow(
-        envConfigs.appwriteDatabaseId,
-        envConfigs.appwriteMessagesTableId,
-        ID.unique(),
-        {
-          name: name,
-          text: message,
-        }
-      );
+      await tables.createRow(envConfigs.appwriteDatabaseId, envConfigs.appwriteMessagesTableId, ID.unique(), {
+        name: name,
+        text: message,
+      });
 
       setSuccess(true);
       setMessage('');
       setName('');
-      
       setTimeout(() => {
         setSuccess(false);
         setIsOpen(false);
-      }, 3000);
+      }, 2500);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to send message');
     } finally {
@@ -71,124 +79,107 @@ const MessagePopup = () => {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === 'Enter' && e.ctrlKey) {
-      handleSubmit();
-    }
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) handleSubmit();
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
-      {/* Tooltip */}
-      {showTooltip && !isOpen && (
-        <div className="absolute bottom-16 right-0 mb-2 animate-bounce">
-          <div className="bg-yellow-900 text-white text-sm px-4 py-2 rounded-lg shadow-lg whitespace-nowrap">
-            💡 Suggest new words here!
-            <div className="absolute bottom-[-6px] right-6 w-3 h-3 bg-yellow-900 transform rotate-45"></div>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(open) => {
+        setIsOpen(open);
+        setShowHint(false);
+        if (!open) {
+          setSuccess(false);
+          setError('');
+        }
+      }}
+    >
+      <div className="fixed bottom-4 right-4 z-50 flex flex-col items-end gap-2 sm:bottom-6 sm:right-6">
+        {showHint && !isOpen && (
+          <div className="animate-fade-in rounded-lg bg-yellow-900 px-3 py-2 text-xs text-white shadow-lg">
+            Missing a word? Tell us.
           </div>
-        </div>
-      )}
+        )}
+        <DialogTrigger asChild>
+          <button
+            type="button"
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-yellow-900 text-white shadow-lg transition-transform hover:scale-105 hover:bg-yellow-950"
+            aria-label="Send us a message or suggest a word"
+          >
+            <MessageCircle size={24} />
+          </button>
+        </DialogTrigger>
+      </div>
 
-      {!isOpen ? (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="bg-yellow-900 hover:bg-yellow-950 text-white rounded-full p-4 shadow-lg transition-all duration-200 hover:scale-110 flex items-center gap-2"
-          aria-label="Open message form"
-        >
-          <MessageCircle size={24} />
-        </button>
-      ) : (
-        <div className="bg-white rounded-lg shadow-2xl w-80 sm:w-96 overflow-hidden">
-          {/* Header */}
-          <div className="bg-yellow-900 text-white p-4 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <MessageCircle size={20} />
-              <h3 className="font-semibold">Send us a message</h3>
+      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Send us a message</DialogTitle>
+          <DialogDescription>
+            Missing a word, or spotted a mistake? Tell us and we will fix it.
+          </DialogDescription>
+        </DialogHeader>
+
+        {success ? (
+          <div className="py-8 text-center">
+            <p className="text-base font-semibold text-emerald-700">Message sent</p>
+            <p className="mt-1 text-sm text-muted-foreground">Thank you for helping the dictionary grow.</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="message-name">Name (optional)</Label>
+              <Input
+                id="message-name"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+                placeholder="Your name"
+                maxLength={255}
+              />
             </div>
-            <button
-              onClick={() => {
-                setIsOpen(false);
-                setSuccess(false);
-                setError('');
-              }}
-              className="hover:bg-yellow-950 rounded p-1 transition-colors"
-              aria-label="Close"
-            >
-              <X size={20} />
-            </button>
-          </div>
 
-          {/* Body */}
-          <div className="p-4">
-            {success ? (
-              <div className="text-center py-8">
-                <div className="text-green-600 text-5xl mb-3">✓</div>
-                <p className="text-green-600 font-semibold">Message sent successfully!</p>
-                <p className="text-gray-600 text-sm mt-2">Thank you for reaching out.</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Name (optional)
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Your name"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-900 focus:border-transparent"
-                    maxLength={255}
-                  />
-                </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="message-text">
+                Message <span className="text-destructive">*</span>
+              </Label>
+              <Textarea
+                id="message-text"
+                value={message}
+                onChange={(event) => setMessage(event.target.value)}
+                onKeyDown={handleKeyDown}
+                placeholder="Have a word suggestion? Send it here and we will add it."
+                rows={4}
+                className="resize-none"
+                maxLength={3000}
+              />
+              <p className="text-right text-[11px] text-muted-foreground">{message.length}/3000</p>
+            </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                    Message <span className="text-red-500">*</span>
-                  </label>
-                  <textarea
-                    id="message"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Have a word suggestion? Send it here and we will add it. (Ctrl+Enter to send)"
-                    rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-900 focus:border-transparent resize-none"
-                    maxLength={3000}
-                  />
-                  <p className="text-xs text-gray-500 mt-1">{message.length}/3000</p>
-                </div>
-
-                {error && (
-                  <div className="text-red-600 text-sm bg-red-50 p-2 rounded">
-                    {error}
-                  </div>
-                )}
-
-                <button
-                  onClick={handleSubmit}
-                  disabled={sending || !message.trim()}
-                  className="w-full bg-yellow-900 hover:bg-yellow-950 disabled:bg-stone-300 text-white font-medium py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2"
-                >
-                  {sending ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
-                      Sending...
-                    </>
-                  ) : (
-                    <>
-                      <Send size={18} />
-                      Send Message
-                    </>
-                  )}
-                </button>
-              </div>
+            {error && (
+              <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>
             )}
+
+            <Button
+              onClick={handleSubmit}
+              disabled={sending || !message.trim()}
+              className="w-full gap-2 bg-yellow-900 hover:bg-yellow-950"
+            >
+              {sending ? (
+                <>
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  Sending…
+                </>
+              ) : (
+                <>
+                  <Send size={16} />
+                  Send message
+                </>
+              )}
+            </Button>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </DialogContent>
+    </Dialog>
   );
 };
 

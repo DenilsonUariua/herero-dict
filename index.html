@@ -2,21 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>Otjiherero Dictionary</title>
-    <meta name="description" content="Otjiherero Dictionary website" />
-    
+    <meta
+      name="description"
+      content="A free English ⇄ Otjiherero dictionary. Look up words, or translate a whole sentence, and copy the result straight into WhatsApp or Messenger."
+    />
+
     <meta name="author" content="Denilson Uariua" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Otjiherero Dictionary" />
+    <meta property="og:title" content="Otjiherero Dictionary — English ⇄ Otjiherero" />
+    <meta
+      property="og:description"
+      content="Look up Otjiherero words or translate a sentence, free and without an account. Works offline once loaded."
+    />
+    <meta property="og:url" content="https://herero-dict.vercel.app/" />
     <meta property="og:image" content="/facebook.png" />
-    <meta property="og:image:alt" content="Otjherero Dictionary Logo" />
+    <meta property="og:image:alt" content="Otjiherero Dictionary logo" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Otjiherero Dictionary — English ⇄ Otjiherero" />
+    <meta
+      name="twitter:description"
+      content="Look up Otjiherero words or translate a sentence, free and without an account."
+    />
+    <meta name="twitter:image" content="/facebook.png" />
+
     <meta name="keywords" content="Otjherero, Dictionary, Language, Herero, Namibia, Africa, Words, Translation" />
     <meta name="google-site-verification" content="dty_px__z6H6fSbMLV5QZ9wdOGKK-CfBsBpvj3YKcbg" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="theme-color" content="#3f2d16" />
+    <link rel="preconnect" href="https://fra.cloud.appwrite.io" crossorigin />
   </head>
 
-  <body>
+  <body style="background: #f6f3e9">
     <div id="root"></div>
+    <noscript>
+      <p style="font-family: system-ui, sans-serif; padding: 2rem; text-align: center">
+        The Otjiherero Dictionary needs JavaScript to run. Please enable it, or use a different browser.
+      </p>
+    </noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

@@ -5,6 +5,8 @@ dictionary-grounded sentence translation.
 
 - **Search & browse** English headwords with their Otjiherero equivalents.
 - **Translate** in both directions — English ⇄ Otjiherero — by word or by sentence.
+- **Copy or share** any word or translation straight into WhatsApp, Telegram or
+  Messenger.
 - **Like** words, **suggest** new ones, and **request corrections**.
 - Works **offline** once loaded (PWA + local lexicon).
 
@@ -12,10 +14,18 @@ dictionary-grounded sentence translation.
 
 ## Features
 
+### 0. The home page is the translator
+Typing a sentence is the first thing a visitor can do — the hero on `/` is the
+same translate box as `/translate`, with the result, its word-by-word gloss and
+copy/share buttons appearing inline. Browsing, word of the day and search sit
+below it. If the text looks like the wrong language for the selected direction,
+the box offers to flip it instead of quietly producing nonsense.
+
 ### 1. Dictionary lookup (both directions)
 Search English to find the Otjiherero term, or search Otjiherero to find the
 English meaning. Handles noun-class prefixes (`otjivike` / `ovivike`), stemming
-(`working` → `WORK`) and near-miss spellings.
+(`working` → `WORK`) and near-miss spellings. The word tab queries both sides at
+once, so it does not matter which language you type.
 
 ### 2. Sentence translation (retrieval-augmented)
 Give it an English sentence and it returns an Otjiherero sentence, a
@@ -23,9 +33,18 @@ word-by-word gloss, grammar notes, a confidence score, and **the exact
 dictionary entries it was grounded in**. Words the dictionary does not cover are
 called out explicitly instead of being silently guessed.
 
-### 3. Likes, suggestions, corrections
+### 3. Copy & share
+Every card and every result carries a copy button and a share menu. Copy puts
+plain text on the clipboard (`Aardvark — ondji-mbandjimba`, or the sentence
+alone); share opens the OS share sheet on phones and falls back to `wa.me`,
+Telegram and SMS links on desktop. The clipboard helper falls back to
+`execCommand` because `navigator.clipboard` does not exist in insecure contexts
+or some in-app webviews — which is how a lot of this traffic arrives.
+
+### 4. Likes, suggestions, corrections
 Mark favourites, submit missing words, and flag mistakes for review. Admins
 review everything from `/admin`.
+
 
 ---
 
@@ -233,7 +252,7 @@ working.
 
 ## Limitations (worth knowing)
 
-- The bundled dictionary is a partial extract (W-words only, ~116 entries). The
+- The bundled dictionary is a partial extract (~2,200 headwords). The
   translator is only as good as the lexicon it retrieves from — coverage will
   improve sharply as the dictionary grows.
 - Otjiherero is low-resource, so the model has almost no prior knowledge of it.
@@ -241,6 +260,10 @@ working.
   dictionary; treat low-confidence output as a draft for a speaker to check.
 - Confidence scores are the model's self-assessment, not a calibrated metric.
 - Sentence translation requires network access and a model; word lookup does not.
+- The PWA precaches the lexicon (~900 kB) on first load so offline lookup works.
+  That is a deliberate trade-off; if first-visit data cost matters more than
+  offline readiness, move `lexicon.json` from `globPatterns` to a runtime
+  cache and fetch it on first translate.
 
 ---
 

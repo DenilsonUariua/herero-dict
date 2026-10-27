@@ -31,9 +31,9 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       <div className="max-w-7xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 font-bold text-foreground hover:opacity-80 transition-opacity">
-          <BookOpenText className="h-5 w-5 text-yellow-900" />
-          <span>Otjiherero Dictionary</span>
+        <Link to="/" className="flex shrink-0 items-center gap-2 font-bold text-foreground transition-opacity hover:opacity-80">
+          <BookOpenText className="h-5 w-5 shrink-0 text-yellow-900" />
+          <span className="whitespace-nowrap text-sm sm:text-base">Otjiherero Dictionary</span>
         </Link>
 
         <div className="flex items-center gap-2">
