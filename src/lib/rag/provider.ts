@@ -22,9 +22,14 @@ export interface CompletionResponse {
   text: string;
   model: string;
   via: 'server' | 'byok';
+  /** The provider stopped at the output-token cap, so `text` may be partial. */
+  truncated?: boolean;
 }
 
 const TIMEOUT_MS = 60_000;
+
+export const TRUNCATED_MESSAGE =
+  'The model ran out of output tokens before it finished the answer. Try a shorter sentence, or raise LLM_MAX_TOKENS on the server.';
 
 function apiBase(): string {
   const base = import.meta.env.BASE_URL || '/';
@@ -49,6 +54,23 @@ function withTimeout(signal: AbortSignal | undefined, ms: number) {
 }
 
 function mapHttpError(status: number, body: string): RagError {
+  // The proxy tags its failures with a machine-readable `error` code and a
+  // human `message`. Prefer those over the bare status number.
+  const detail = parseErrorBody(body);
+  if (detail.code === 'upstream-timeout') {
+    return new RagError('timeout', 'The model provider timed out. Try a shorter sentence.');
+  }
+  if (detail.code === 'truncated') return new RagError('bad-response', TRUNCATED_MESSAGE);
+  if (detail.code === 'not-configured') {
+    return new RagError('server', 'No translation proxy is configured on this deployment.');
+  }
+  if (detail.code === 'upstream-error' && detail.upstreamStatus === 429) {
+    return new RagError('rate-limit', 'The model provider is rate limiting requests. Try again in a moment.');
+  }
+  if (detail.code === 'upstream-error' && detail.message) {
+    return new RagError('server', `The model provider rejected the request: ${detail.message.slice(0, 200)}`);
+  }
+
   if (status === 401 || status === 403) {
     return new RagError('bad-key', 'The API key was rejected. Check the key in translation settings.');
   }
@@ -59,6 +81,18 @@ function mapHttpError(status: number, body: string): RagError {
     return new RagError('server', `The model provider returned an error (${status}).`);
   }
   return new RagError('unknown', `Request failed (${status}): ${body.slice(0, 200)}`);
+}
+
+function parseErrorBody(body: string): { code?: string; message?: string; upstreamStatus?: number } {
+  try {
+    const data = JSON.parse(body) as Record<string, unknown>;
+    const code = typeof data?.error === 'string' ? data.error : undefined;
+    const message = typeof data?.message === 'string' ? data.message : undefined;
+    const upstreamStatus = typeof data?.status === 'number' ? data.status : undefined;
+    return { code, message, upstreamStatus };
+  } catch {
+    return {};
+  }
 }
 
 async function viaServer({ messages, signal, temperature }: CompletionRequest): Promise<CompletionResponse> {
@@ -81,7 +115,12 @@ async function viaServer({ messages, signal, temperature }: CompletionRequest): 
 
     const data = await res.json().catch(() => null);
     if (!data?.text) throw new RagError('bad-response', 'The proxy returned an empty response.');
-    return { text: String(data.text), model: String(data.model ?? 'proxy'), via: 'server' };
+    return {
+      text: String(data.text),
+      model: String(data.model ?? 'proxy'),
+      via: 'server',
+      truncated: Boolean(data.truncated),
+    };
   } catch (err) {
     if (err instanceof RagError) throw err;
     if ((err as Error)?.name === 'AbortError') {
@@ -150,7 +189,12 @@ async function viaByok({ messages, settings, signal, temperature }: CompletionRe
   const data = await res.json().catch(() => null);
   const text = data?.choices?.[0]?.message?.content;
   if (!text) throw new RagError('bad-response', 'The model returned an empty response.');
-  return { text: String(text), model: String(data?.model ?? settings.model), via: 'byok' };
+  return {
+    text: String(text),
+    model: String(data?.model ?? settings.model),
+    via: 'byok',
+    truncated: data?.choices?.[0]?.finish_reason === 'length',
+  };
 }
 
 export async function requestCompletion(req: CompletionRequest): Promise<CompletionResponse> {

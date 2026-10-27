@@ -16,7 +16,7 @@
 import { loadLexicon } from './lexicon';
 import { retrieve, lookupWord, type WordLookupResult } from './retriever';
 import { buildMessages } from './prompt';
-import { requestCompletion } from './provider';
+import { requestCompletion, TRUNCATED_MESSAGE } from './provider';
 import {
   RagError,
   type ContextBlock,
@@ -105,6 +105,67 @@ function stripFences(raw: string): string {
   return text;
 }
 
+/**
+ * Append the closing brackets a model forgot.
+ *
+ * Some models emit a complete object but drop the final `}`. That is worth
+ * recovering because nothing has to be invented to fix it. A reply cut off
+ * mid-string cannot be recovered this way and returns null, so callers still
+ * report a real error instead of showing half a sentence.
+ */
+function closeUnbalancedJson(raw: string): string | null {
+  const text = stripFences(raw);
+  const start = text.indexOf('{');
+  if (start === -1) return null;
+
+  const body = text.slice(start);
+  const closers: string[] = [];
+  let inString = false;
+  let escaped = false;
+
+  for (let i = 0; i < body.length; i++) {
+    const ch = body[i];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === '\\') escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') inString = true;
+    else if (ch === '{') closers.push('}');
+    else if (ch === '[') closers.push(']');
+    else if (ch === '}' || ch === ']') {
+      if (closers.pop() !== ch) return null;
+    }
+  }
+
+  // mid-string cut, or already balanced (so the failure is elsewhere)
+  if (inString || closers.length === 0) return null;
+
+  return body.replace(/[\s,]+$/, '') + closers.reverse().join('');
+}
+
+/** Parse the model's JSON, tolerating code fences and a missing final brace. */
+function parseObject(raw: string, truncated: boolean): Record<string, unknown> {
+  for (const candidate of [stripFences(raw), closeUnbalancedJson(raw)]) {
+    if (!candidate) continue;
+    try {
+      const value = JSON.parse(candidate);
+      if (value && typeof value === 'object' && !Array.isArray(value)) {
+        return value as Record<string, unknown>;
+      }
+    } catch {
+      /* try the next candidate */
+    }
+  }
+  throw new RagError(
+    'bad-response',
+    truncated
+      ? TRUNCATED_MESSAGE
+      : 'The model did not return usable JSON. Try again, or switch to a more capable model.',
+  );
+}
+
 function asString(value: unknown, fallback = ''): string {
   return typeof value === 'string' ? value.trim() : fallback;
 }
@@ -175,15 +236,7 @@ export async function translateSentence(options: TranslateCoreOptions): Promise<
   const completion = await requestCompletion({ messages, settings, signal });
 
   onStage?.('validating');
-  let parsed: Record<string, unknown>;
-  try {
-    parsed = JSON.parse(stripFences(completion.text));
-  } catch {
-    throw new RagError(
-      'bad-response',
-      'The model did not return usable JSON. Try again, or switch to a more capable model.',
-    );
-  }
+  const parsed = parseObject(completion.text, Boolean(completion.truncated));
 
   const usedEntries = asStringArray(parsed.usedEntries).map((s) => s.toUpperCase());
   const sources = blocks
@@ -216,6 +269,12 @@ export async function translateSentence(options: TranslateCoreOptions): Promise<
 
   if (!result.herero) {
     throw new RagError('bad-response', 'The model returned an empty translation.');
+  }
+
+  if (completion.truncated) {
+    // the object was salvageable but the model stopped early, so say so
+    const warning = 'Note: the model hit its output-token limit, so this answer may be incomplete.';
+    result.notes = result.notes ? `${result.notes} ${warning}` : warning;
   }
 
   const cache = readCache();

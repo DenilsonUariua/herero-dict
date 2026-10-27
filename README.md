@@ -149,6 +149,18 @@ function (Vercel needs no extra config). Set the same variables in your host's
 dashboard — **never** prefix them with `VITE_`, or the key would be bundled into
 the browser build.
 
+Two optional knobs matter when the answers come back broken:
+
+```bash
+LLM_MAX_TOKENS=4096        # default; raise if translations get cut off
+LLM_REASONING_EFFORT=low   # Gemini 2.5 / o-series: less thinking, faster replies
+```
+
+Reasoning models bill their hidden "thinking" against `LLM_MAX_TOKENS`. Set it
+too low and the budget is spent before the JSON answer is written, so the reply
+arrives truncated and unparseable. The proxy now retries once with double the
+room and reports truncation clearly if it still runs out.
+
 **B. Per-visitor key (no backend).** Leave `LLM_API_KEY` empty. Visitors open
 the gear icon on `/translate` and paste their own key; it is stored only in
 their browser and sent straight to the provider.
