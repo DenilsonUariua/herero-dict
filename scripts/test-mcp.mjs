@@ -105,10 +105,12 @@ check(
   search.entries?.map((e) => e.headword).slice(0, 3).join(', '),
 );
 check('search_dictionary uncovers gaps', Array.isArray(search.uncovered), `uncovered: ${search.uncovered?.join(', ') || '(none)'}`);
-const gaps = JSON.parse((await call('search_dictionary', { query: 'The doctor arrived with a present.' })).text);
+// deliberately modern vocabulary: absent from a 1983 dictionary, so it must
+// surface as "uncovered" rather than being silently guessed
+const gaps = JSON.parse((await call('search_dictionary', { query: 'The astronaut repaired the satellite.' })).text);
 check(
   'search_dictionary reports missing words',
-  gaps.uncovered?.includes('doctor') && gaps.uncovered?.includes('present'),
+  gaps.uncovered?.includes('astronaut') && gaps.uncovered?.includes('satellite'),
   gaps.uncovered?.join(', '),
 );
 

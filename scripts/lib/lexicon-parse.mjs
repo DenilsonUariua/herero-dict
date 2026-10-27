@@ -232,6 +232,54 @@ function splitHeadword(word) {
 }
 
 /**
+ * Phrases are whole sentences, not single lexical items: no comma splitting,
+ * no noun-class extraction (a trailing "(plur.)" is a label, not a class),
+ * and variants are separated by "·".
+ * "/Wa penduka nawa? (sing.) · Mwa penduka nawa? (plur.)."
+ *   -> ["Wa penduka nawa?", "Mwa penduka nawa?"]
+ */
+function parsePhraseTerms(pronunciation) {
+  const raw = String(pronunciation ?? '')
+    .trim()
+    .replace(/^[\s/]+/, '')
+    .replace(/[\s.]+$/, '');
+
+  return raw
+    .split('·')
+    .map((variant) =>
+      variant
+        .replace(/\([^)]*\)/g, ' ') // drop (sing.) / (plur.) / (early evening) labels
+        .replace(/\s+/g, ' ')
+        .replace(/^[\s/–—-]+/, '')
+        .replace(/[\s/.,;:–—-]+$/, '')
+        .trim(),
+    )
+    .filter(Boolean)
+    .map((hz) => ({ hz, classPrefix: null, verbEnding: null, source: 'pronunciation' }));
+}
+
+/** For phrases, each definitions string is exactly one "ENGLISH/Herero" pair. */
+function parsePhraseExamples(definitions) {
+  const list = Array.isArray(definitions) ? definitions : definitions ? [definitions] : [];
+  const examples = [];
+  for (const raw of list) {
+    const text = String(raw ?? '').trim();
+    if (!text) continue;
+    const slash = text.indexOf('/');
+    if (slash === -1) {
+      examples.push({ en: null, hz: text, cue: false });
+      continue;
+    }
+    examples.push({
+      en: text.slice(0, slash).trim().replace(/[.:]+$/, '') || null,
+      hz: text.slice(slash + 1).trim().replace(/[\s.]+$/, ''),
+      cue: false,
+    });
+  }
+  return examples;
+}
+
+/**
  * Parse one raw dictionary row into a structured entry.
  * @param {Record<string, unknown>} row
  * @param {string} id
@@ -239,6 +287,22 @@ function splitHeadword(word) {
 export function parseEntry(row, id) {
   const { en, lemma, qualifier } = splitHeadword(row?.word);
   const flags = new Set();
+
+  // Whole-sentence entries (greetings, set phrases) take a simpler path.
+  if (row?.partOfSpeech === 'phrase') {
+    return {
+      id,
+      en,
+      lemma,
+      enNorm: lemma.toLowerCase(),
+      qualifier,
+      pronCue: null,
+      terms: parsePhraseTerms(row?.pronunciation),
+      subEntries: [],
+      examples: parsePhraseExamples(row?.definitions),
+      flags: [],
+    };
+  }
 
   const fromPronunciation = parseTerms(row?.pronunciation);
   fromPronunciation.flags.forEach((f) => flags.add(f));

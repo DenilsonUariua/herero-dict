@@ -28,3 +28,7 @@ words.csv
 words.json
 # MCP build output
 dist-mcp
+
+# PDF extraction working files
+.extract
+*.pdf
